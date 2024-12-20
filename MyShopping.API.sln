@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShopping.API", "MyShopping.API\MyShopping.API.csproj", "{00AC8CFD-5A16-45BE-BE9F-B37701FCF89B}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DataAccess", "Shop.DataAccess\Shop.DataAccess.csproj", "{0B4772AB-7094-4BA0-8802-B45576C3AEB3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Core", "Shop.Core\Shop.Core.csproj", "{138B9747-021B-4EC4-9A25-5050D9C4F080}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DTO", "Shop.DTO\Shop.DTO.csproj", "{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{138B9747-021B-4EC4-9A25-5050D9C4F080}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{138B9747-021B-4EC4-9A25-5050D9C4F080}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{138B9747-021B-4EC4-9A25-5050D9C4F080}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Core.Entities
+namespace Shop.DTO.PostDTO
 {
-    public class InvoiceFile
+    public record PostWishlistDTO
     {
-
     }
 }

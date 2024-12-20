@@ -5,7 +5,8 @@ namespace MyShopping.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class OrderController : ControllerBase
     {
+        //private readonly IOrderService orderService;
     }
 }

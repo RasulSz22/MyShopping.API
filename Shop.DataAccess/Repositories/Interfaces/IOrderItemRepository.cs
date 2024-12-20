@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.Core.Entities
+namespace Shop.DataAccess.Repositories.Interfaces
 {
-    public class Order
+    public interface IOrderItemRepository
     {
     }
 }
