@@ -12,8 +12,6 @@ namespace Shop.Core.Entities.Models
         public string ImageUrl { get; set; }
         public string AltText { get; set; }
         public bool IsMain { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
         public string FileType { get; set; }
         public Product Product { get; set; }
         public int ProductId {  get; set; }

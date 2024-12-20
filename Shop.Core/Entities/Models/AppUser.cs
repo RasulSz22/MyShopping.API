@@ -1,12 +1,4 @@
-﻿using Shop.Core.Entities.Common;
-using Shop.Core.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shop.Core.Entities.Models
+﻿namespace Shop.Core.Entities.Models
 {
     public class AppUser : Microsoft.AspNetCore.Identity.IdentityUser
     {

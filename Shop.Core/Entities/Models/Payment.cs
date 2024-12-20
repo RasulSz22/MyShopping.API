@@ -1,11 +1,5 @@
 ﻿using Shop.Core.Entities.Common;
 using Shop.Core.Entities.Enums;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Shop.Core.Entities.Models
 {
@@ -15,7 +9,7 @@ namespace Shop.Core.Entities.Models
         public string ExpirationDate {  get; set; }
         public string CVV {  get; set; }
         public PaymentMethods PaymentMethod { get; set; }
-        public string AppUserId {  get; set; }
+        public int AppUserId {  get; set; }
         public AppUser AppUser { get; set; }
     }
 }
