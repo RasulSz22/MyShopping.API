@@ -1,6 +1,8 @@
 ﻿using Shop.Core.Entities.Common;
+using Shop.Core.Entities.Enums;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +11,11 @@ namespace Shop.Core.Entities.Models
 {
     public class Payment : BaseEntity
     {
-        public Order OrderId { get; set; }
-        public decimal Amount { get; set; }
-        public string PaymentMethod { get; set; }
-        public string PaymentStatus { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public string CardNumber {  get; set; }
+        public string ExpirationDate {  get; set; }
+        public string CVV {  get; set; }
+        public PaymentMethods PaymentMethod { get; set; }
+        public string AppUserId {  get; set; }
+        public AppUser AppUser { get; set; }
     }
 }

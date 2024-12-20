@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.DTO.PutDTO
+namespace Shop.DTO.PostDTO
 {
-    public record PutCartDTO
+    public record PostDiscountDTO
     {
     }
 }

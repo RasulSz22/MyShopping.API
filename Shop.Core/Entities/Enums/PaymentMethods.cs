@@ -4,9 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shop.DTO.PostDTO
+namespace Shop.Core.Entities.Enums
 {
-    public record PostCartDTO
+    public enum PaymentMethods
     {
+        None,
+        Card,
+        EWallet,
+        BankTransfer
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.Contexts
 {
-    public class MyShoppingAPIDbContext:IdentityDbContext<AppUser,AppRole,string>
+    public class MyShoppingAPIDbContext:IdentityDbContext<Core.Entities.Identity.AppUser,AppRole,string>
     {
         public MyShoppingAPIDbContext(DbContextOptions options) : base(options)
         {
@@ -22,6 +22,16 @@ namespace Shop.DataAccess.Contexts
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductImage> ProductImageFiles { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Shipping> ShippingItems { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; } 
+        public DbSet<WishlistItem> WishlistItem { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
@@ -44,6 +54,8 @@ namespace Shop.DataAccess.Contexts
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             base.OnModelCreating(builder);
+
+
         }
     }
 }

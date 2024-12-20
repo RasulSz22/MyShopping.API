@@ -6,15 +6,13 @@ using System.Threading.Tasks;
 
 namespace Shop.Core.Entities.Enums
 {
-    public enum ProductCategory
+    public enum ShippingTypes
     {
-        none,
-        Man,
-        Woman,
-        Home,
-        Supermarket,
-        Cosmedic,
-        Bag,
-        Electronic
+        None,
+        Standart,
+        Expedited,
+        SameDayDelivery,
+        International,
+        Dropshipping
     }
 }

@@ -9,9 +9,11 @@ namespace Shop.Core.Entities.Models
 {
     public class Review : BaseEntity
     {
-        public Order OrderId { get; set; }
-        public User UserId { get; set; }
-        public string Comment { get; set; }
-        public int Rating { get; set; }
+        public int Rating {  get; set; }
+        public string Content {  get; set; }
+        public int ProductId {  get; set; }
+        public Product Product { get; set; }
+        public string AppUserId {  get; set; }
+        public AppUser AppUser { get; set; }
     }
 }
