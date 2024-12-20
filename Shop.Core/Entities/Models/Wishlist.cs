@@ -10,6 +10,6 @@ namespace Shop.Core.Entities.Models
     public class Wishlist : BaseEntity
     {
  
-        public ICollection<WishlistItem> WishlistItems { get; set; }
+        public List<WishlistItem> WishlistItems { get; set; }
     }
 }

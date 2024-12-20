@@ -9,7 +9,8 @@ namespace Shop.Core.Entities.Models
 {
     public class WishlistItem : BaseEntity
     {
-        public Wishlist WishlistId { get; set; }
+        public int WishlistId { get; set; }
+        public Wishlist Wishlist { get; set; }
         public Product ProductId { get; set; }
     }
 }
