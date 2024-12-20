@@ -1,5 +1,4 @@
-﻿
-using Shop.Core.Entities.Models;
+﻿using Shop.Core.Entities.Models;
 using Shop.DataAccess.Contexts;
 using Shop.DataAccess.Repositories.Interfaces;
 using System;
@@ -10,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.Repositories.Implementations
 {
-    public class UserRepository : EFRepositoryBase<User>, IUserRepository
+    public class CategoryRepository : EFRepositoryBase<Category>, ICategoryRepository
     {
-        public UserRepository(MyShoppingAPIDbContext context) : base(context)
+        public CategoryRepository(MyShoppingAPIDbContext context) : base(context)
         {
             
         }

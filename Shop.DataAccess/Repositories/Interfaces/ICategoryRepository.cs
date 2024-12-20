@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.Repositories.Interfaces
 {
-    public interface IUserRepository : IRepositoryBase<User>
+    public interface ICategoryRepository : IRepositoryBase<Category>
     {
+
     }
 }

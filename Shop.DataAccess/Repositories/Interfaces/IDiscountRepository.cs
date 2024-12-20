@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.Repositories.Interfaces
 {
-    public interface IOrderItemRepository : IRepositoryBase<OrderItem>
+    public interface IDiscountRepository : IRepositoryBase<Discount>
     {
     }
 }

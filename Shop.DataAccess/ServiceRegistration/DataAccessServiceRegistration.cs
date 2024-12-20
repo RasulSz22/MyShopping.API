@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.ServiceRegistration
 {
-    public class DataAccessServiceRegistration
+    public static class DataAccessServiceRegistration
     {
         public static void DataAccessServiceRegister(this IServiceCollection services, IConfiguration configuration)
         {
@@ -29,17 +29,26 @@ namespace Shop.DataAccess.ServiceRegistration
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IProductRepository, ProductReposiroty>();
             services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<ICartItemRepository, CartItemRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+            services.AddScoped<IShippingRepository,ShippingRepository>();
+            services.AddScoped<IWishlistRepository,WishlistRepository>();
+            services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IDiscountRepository, DiscountRepository>();
 
-            services.AddIdentity<AppUser, IdentityRole>(opt =>
-            {
-                opt.User.RequireUniqueEmail = true;
-                opt.Lockout.MaxFailedAccessAttempts = 5;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-                opt.SignIn.RequireConfirmedEmail = true;
-                opt.Lockout.AllowedForNewUsers = true;
-            })
-                .AddEntityFrameworkStores<MyShoppingAPIDbContext>()
-                .AddDefaultTokenProviders();
+
+            //services.AddIdentity<AppUser, IdentityRole>(opt =>
+            //{
+            //    opt.User.RequireUniqueEmail = true;
+            //    opt.Lockout.MaxFailedAccessAttempts = 5;
+            //    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+            //    opt.SignIn.RequireConfirmedEmail = true;
+            //    opt.Lockout.AllowedForNewUsers = true;
+            //})
+            //    .AddEntityFrameworkStores<MyShoppingAPIDbContext>()
+            //    .AddDefaultTokenProviders();
         }
     }
 }
