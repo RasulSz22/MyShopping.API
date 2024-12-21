@@ -1,4 +1,5 @@
 ﻿using Shop.Core.Entities.Common;
+using Shop.Core.Utilities.Results.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,8 @@ namespace Shop.Core.Entities.Models
     {
         public int WishlistId { get; set; }
         public Wishlist Wishlist { get; set; }
-        public Product ProductId { get; set; }
+        public Product Product { get; set; }
+        public int ProductId { get; set; }
+        public bool IsLiked { get; set; }
     }
 }

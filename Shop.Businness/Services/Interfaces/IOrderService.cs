@@ -15,5 +15,4 @@ namespace Shop.Businness.Services.Interfaces
         void DeleteOrder(int id);
     }
 
-    
 }

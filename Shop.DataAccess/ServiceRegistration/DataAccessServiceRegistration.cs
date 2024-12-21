@@ -1,9 +1,7 @@
-﻿//using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shop.Core.Entities.Identity;
 using Shop.DataAccess.Contexts;
 using Shop.DataAccess.Repositories.Implementations;
 using Shop.DataAccess.Repositories.Interfaces;

@@ -32,7 +32,6 @@ namespace Shop.Businness.Mappers
             CreateMap<OrderItem, PostOrderItemDTO>().ReverseMap();
 
 
-
             CreateMap<CartItem, GetCartItemDTO>().ReverseMap();
             CreateMap<CartItem, PostCartItemDTO>().ReverseMap();
 
