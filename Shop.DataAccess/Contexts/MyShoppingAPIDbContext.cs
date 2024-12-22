@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Shop.DataAccess.Contexts
 {
-    public class MyShoppingAPIDbContext : DbContext //IdentityDbContext<AppUser>
+    public class MyShoppingAPIDbContext : IdentityDbContext<AppUser>
     {
         public MyShoppingAPIDbContext(DbContextOptions<MyShoppingAPIDbContext> options) : base(options)
         {
@@ -53,7 +53,6 @@ namespace Shop.DataAccess.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
 
             builder.Entity<CartItem>()
             .Property(c => c.Price)

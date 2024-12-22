@@ -2,15 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Core.Entities.Models;
 using Shop.DataAccess.Contexts;
 using Shop.DataAccess.Repositories.Implementations;
 using Shop.DataAccess.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Shop.DataAccess.ServiceRegistration
 {
@@ -37,16 +33,14 @@ namespace Shop.DataAccess.ServiceRegistration
             services.AddScoped<IDiscountRepository, DiscountRepository>();
 
 
-            //services.AddIdentity<AppUser, IdentityRole>(opt =>
-            //{
-            //    opt.User.RequireUniqueEmail = true;
-            //    opt.Lockout.MaxFailedAccessAttempts = 5;
-            //    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
-            //    opt.SignIn.RequireConfirmedEmail = true;
-            //    opt.Lockout.AllowedForNewUsers = true;
-            //})
-            //    .AddEntityFrameworkStores<MyShoppingAPIDbContext>()
-            //    .AddDefaultTokenProviders();
+            services.AddIdentityCore<AppUser>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+            })
+     .AddRoles<IdentityRole>()
+     .AddEntityFrameworkStores<MyShoppingAPIDbContext>();
         }
     }
 }
