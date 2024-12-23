@@ -4,8 +4,8 @@ namespace Shop.Core.Entities.Models
 {
     public class Order : BaseEntity
     {
-        //public int AppUserId { get; set; }
-        //public AppUser AppUser { get; set; }
+        public int AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
         public decimal TotalAmount { get; set; }
         public string? Status { get; set; }
         public List<OrderItem> OrderItems { get; set; }

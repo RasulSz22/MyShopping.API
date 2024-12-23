@@ -9,7 +9,7 @@ namespace Shop.Core.Entities.Models
         public string ExpirationDate {  get; set; }
         public string CVV {  get; set; }
         public PaymentMethods PaymentMethod { get; set; }
-        //public int AppUserId {  get; set; }
-        //public AppUser AppUser { get; set; }
+        public int AppUserId { get; set; }
+        public AppUser AppUser { get; set; }
     }
 }
