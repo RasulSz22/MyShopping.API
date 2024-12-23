@@ -9,7 +9,7 @@ namespace Shop.Core.Entities.Models
         public decimal TotalAmount { get; set; }
         public string? Status { get; set; }
         public List<OrderItem> OrderItems { get; set; }
-        public int PaymentId {  get; set; }
+        public int PaymentId { get; set; }
         public string? DeliveryStatus { get; set; }
         public DateTime? DeliveryTime { get; set; }
     }

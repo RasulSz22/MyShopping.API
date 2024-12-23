@@ -17,7 +17,7 @@ namespace Shop.Core.Entities.Models
         public Category Category { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-        public int DiscountId {  get; set; }
+        public int DiscountId { get; set; }
         public Discount Discount { get; set; }
 
         public List<ProductImage> ProductImages { get; set; }

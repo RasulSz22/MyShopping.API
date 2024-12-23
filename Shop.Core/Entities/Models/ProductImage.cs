@@ -14,6 +14,6 @@ namespace Shop.Core.Entities.Models
         public bool IsMain { get; set; }
         public string FileType { get; set; }
         public Product Product { get; set; }
-        public int ProductId {  get; set; }
+        public int ProductId { get; set; }
     }
 }
