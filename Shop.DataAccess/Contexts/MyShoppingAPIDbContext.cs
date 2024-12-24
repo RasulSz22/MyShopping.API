@@ -49,7 +49,7 @@ namespace Shop.DataAccess.Contexts
             }
             return base.SaveChangesAsync(cancellationToken);
         }
-        
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -74,7 +74,6 @@ namespace Shop.DataAccess.Contexts
             builder.Entity<Product>()
             .Property(p => p.Price)
             .HasColumnType("decimal(18,2)");
-
         }
     }
 }
