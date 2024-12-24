@@ -10,6 +10,6 @@ namespace Shop.Core.Entities.Enums
     {
         None,
         Admin,
-        Customer
+        Customer,
     }
 }
