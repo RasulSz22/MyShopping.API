@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Shop.Businness.Responses
 {
-    public class PaginatedResponse<T>
+    public class PagginatedResponse<T>
     {
-        public PaginatedResponse(IList<T> datas, int pageNumber, int pageSize, int totalCount, IList<T> otherdatas = default)
+        public PagginatedResponse(IList<T> datas, int pageNumber, int pageSize, int totalCount, IList<T> otherdatas = default)
         {
             Datas = datas;
             Otherdatas = otherdatas;
