@@ -1,4 +1,5 @@
 ﻿using Shop.Core.Entities;
+using Shop.Core.Entities.Models;
 using Shop.DTO.GetDTO;
 using Shop.DTO.PostDTO;
 using System;
@@ -14,8 +15,8 @@ namespace Shop.DTO.CreateDTO
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public int StockQuantity { get; set; }
-
-        public ICollection<PostProductİmageDTO> ProductImages { get; set; }
+        public int Stock { get; set; }
+        public int CategoryId { get; set; }
+        public int DiscountId { get; set; }
     }
 }

@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Shop.Core\Shop.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="UserDTO\" />
+  </ItemGroup>
+
 </Project>

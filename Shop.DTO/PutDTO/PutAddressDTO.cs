@@ -8,7 +8,7 @@ namespace Shop.DTO.PutDTO
 {
     public record PutAddressDTO
     {
-        public int İd { get; set; }
+        public int Id { get; set; }
         public string? City { get; set; }
         public string? Street { get; set; }
         public string? PostalCode { get; set; }

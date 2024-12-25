@@ -9,15 +9,11 @@ namespace Shop.DTO.PutDTO
 {
     public record PutOrderDTO
     {
-        public int ID { get; set; }
-        public int CustomerId { get; set; }
-        public string? Address { get; set; }
+        public int Id { get; set; }
         public decimal TotalAmount { get; set; }
         public string? Status { get; set; }
-        public Address? ShippingAdress { get; set; }
-        public List<Product>? OrderItems { get; set; }
-        public string? PaymentMethod { get; set; }
-        public string? PaymentStatus { get; set; }
+        public int PaymentId { get; set; }
+        public string? DeliveryStatus { get; set; }
         public DateTime? DeliveryTime { get; set; }
     }
 }

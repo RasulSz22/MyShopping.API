@@ -9,8 +9,7 @@ namespace Shop.DTO.PostDTO
 {
     public class PostCategoryDTO
     {
-        public string CategoryName {  get; set; }
-        public string CategoryLogo {  get; set; }
-        public List<Category> Categories { get; set; }
+        public string Name {  get; set; }
+        public int ParentId { get; set; }
     }
 }

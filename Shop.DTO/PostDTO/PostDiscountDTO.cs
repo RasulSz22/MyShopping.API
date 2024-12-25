@@ -8,5 +8,7 @@ namespace Shop.DTO.PostDTO
 {
     public record PostDiscountDTO
     {
+        public string Promocode { get; set; }
+        public decimal DiscountPercentage { get; set; }
     }
 }

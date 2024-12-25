@@ -1,4 +1,5 @@
 ﻿using Shop.Core.Entities;
+using Shop.Core.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,7 @@ namespace Shop.DTO.GetDTO
         public string ImageUrl { get; set; }
         public string AltText { get; set; }
         public bool IsMain { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-        public long FileSize { get; set; }
         public string FileType { get; set; }
+        public int ProductId { get; set; }
     }
 }

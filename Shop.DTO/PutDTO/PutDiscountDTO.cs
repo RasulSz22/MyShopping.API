@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shop.Core.Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace Shop.DTO.PutDTO
 {
     public record PutDiscountDTO
     {
+        public int Id { get; set; }
+        public string Promocode { get; set; }
+        public decimal DiscountPercentage { get; set; }
     }
 }
