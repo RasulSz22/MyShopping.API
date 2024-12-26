@@ -50,9 +50,6 @@ namespace Shop.Businness.Mappers
             CreateMap<Shipping, GetShippingDTO>().ReverseMap();
             CreateMap<Shipping, PostShippingDTO>().ReverseMap();
 
-            CreateMap<AppUser, GetAppUserDTO>().ReverseMap();
-            CreateMap<AppUser, PostAppUserDTO>().ReverseMap();
-
             CreateMap<Wishlist, GetWishlistDTO>().ReverseMap();
             CreateMap<Wishlist, PostWishlistDTO>().ReverseMap();
 
