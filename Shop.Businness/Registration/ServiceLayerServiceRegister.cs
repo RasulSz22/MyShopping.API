@@ -10,8 +10,22 @@ using System.Threading.Tasks;
 
 namespace Shop.Businness.Registration
 {
-    //public static void ServiceLayerServiceRegister(this IServiceCollection services)
-    //{
-    //    services.AddScoped<IAddressService, AddressService>();
-    //}
+    public static class ServiceLayerServiceRegister
+    {
+        public static void ServiceRegister(this IServiceCollection services)
+        {
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IProductImagesService, ProductImageService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IAddressService, AddressService>();
+            services.AddScoped<ICartItemService, CartItemService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IOrderItemsService, OrderItemsService>();
+            services.AddScoped<IShippingService, ShippingService>();
+            services.AddScoped<IWishlistService, WishlistService>();
+            services.AddScoped<IWishlistItemService, WishlistItemService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IDiscountService, DiscountService>();
+        }
+    }
 }

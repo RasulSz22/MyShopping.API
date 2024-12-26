@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Shop.Businness.Services.Implementations
 {
-    public class ReviewService : IReviewService
+    public class ProductImageService : IProductImagesService
     {
     }
 }

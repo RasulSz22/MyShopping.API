@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace Shop.DTO.UserDTO
 {
-    public record ResetPassword
+    public record ResetPasswordDTO
+
     {
         [Required(ErrorMessage = "Email must be entered!")]
         [StringLength(40, MinimumLength = 10, ErrorMessage = "Email must be between 10 and 40 characters")]

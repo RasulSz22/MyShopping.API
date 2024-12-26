@@ -1,7 +1,7 @@
 
 using Shop.Businness.Mappers;
 using Shop.DataAccess.ServiceRegistration;
-
+using Shop.Businness.Registration;
 namespace MyShopping.API
 {
     public class Program
@@ -15,6 +15,7 @@ namespace MyShopping.API
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(GlobalMapping));
             builder.Services.DataAccessServiceRegister(builder.Configuration);
+            builder.Services.ServiceRegister();
 
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
