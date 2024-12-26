@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Businness.Services.Implementations;
 using Shop.Businness.Services.Interfaces;
+using Shop.Core.Helper.MailHelper;
 using Shop.DataAccess.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,9 @@ namespace Shop.Businness.Registration
             services.AddScoped<IWishlistItemService, WishlistItemService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IDiscountService, DiscountService>();
+            //services.AddScoped<IEmailHelper, EmailHelper>();
+            //services.AddScoped<IEmailConfiguration, EmailConfiguration>();
+           // services.AddHttpContextAccessor();
         }
     }
 }
