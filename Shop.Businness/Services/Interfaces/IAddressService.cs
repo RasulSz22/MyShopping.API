@@ -8,5 +8,6 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface IAddressService
     {
+
     }
 }
