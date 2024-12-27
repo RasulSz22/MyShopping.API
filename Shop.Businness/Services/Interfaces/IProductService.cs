@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Shop.Core.Utilities.Results.Abstract;
+using Shop.DTO.CreateDTO;
+using Shop.DTO.GetDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +11,9 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface IProductService
     {
+        public Task<IResult> CreateAsync(PostProductDTO dto);
+        public Task<IResult> RemoveAsync(int id);
+        public Task<IResult> UpdateAsync(int id, PostProductDTO dto);
+        public Task<IDataResult<GetProductDTO>> GetAsync(int id);
     }
 }

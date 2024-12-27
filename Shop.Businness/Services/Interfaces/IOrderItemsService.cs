@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Shop.Businness.Responses;
+using Shop.Core.Utilities.Results.Abstract;
+using Shop.DTO.GetDTO;
+using Shop.DTO.PostDTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +12,10 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface IOrderItemsService
     {
-
+        public Task<PagginatedResponse<GetOrderDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6);
+        public Task<IResult> CreateAsync(PostOrderItemDTO dto);
+        public Task<IResult> RemoveAsync(int id);
+        public Task<IResult> UpdateAsync(int id, PostOrderItemDTO dto);
+        public Task<IDataResult<GetOrderItemDTO>> GetAsync(int id);
     }
 }
