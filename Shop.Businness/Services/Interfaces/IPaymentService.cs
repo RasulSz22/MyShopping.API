@@ -12,9 +12,7 @@ namespace Shop.Businness.Services.Interfaces
     public interface IPaymentService
     {
         public Task<IResult> CreateAsync(PostPaymentDTO dto);
-
         public Task<IResult> RemoveAsync(int id);
-
         public Task<IResult> UpdateAsync(int id, PostPaymentDTO dto);
         public Task<IDataResult<GetPaymentDTO>> GetAsync(int id);
     }

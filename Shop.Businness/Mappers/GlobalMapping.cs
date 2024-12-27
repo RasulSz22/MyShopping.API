@@ -31,7 +31,6 @@ namespace Shop.Businness.Mappers
             CreateMap<OrderItem, GetOrderItemDTO>().ReverseMap();
             CreateMap<OrderItem, PostOrderItemDTO>().ReverseMap();
 
-
             CreateMap<CartItem, GetCartItemDTO>().ReverseMap();
             CreateMap<CartItem, PostCartItemDTO>().ReverseMap();
 
@@ -55,9 +54,6 @@ namespace Shop.Businness.Mappers
 
             CreateMap<WishlistItem, GetWishlistItemDTO>().ReverseMap();
             CreateMap<WishlistItem, PostWishlistItemDTO>().ReverseMap();
-
-
-
         }
     }
 }

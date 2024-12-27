@@ -14,6 +14,5 @@ namespace Shop.DTO.GetDTO
         public PaymentMethods PaymentMethod { get; set; }
         public string AppUserId { get; set; }
         public string AppUserName { get; set; }
-        public GetPaymentDTO() { }
     }
 }
