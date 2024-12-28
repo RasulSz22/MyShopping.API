@@ -14,6 +14,7 @@ namespace Shop.DataAccess.Repositories.Implementations
         public AddressRepository(MyShoppingAPIDbContext context) : base(context) 
         { 
 
+
         }
     }
 }
