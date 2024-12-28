@@ -26,7 +26,7 @@ namespace Shop.Businness.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<IResult> CreateAsync(GetAddressDTO dto)
+        public async Task<IResult> CreateAsync(PostAddressDTO dto)
         {
             Address address = _mapper.Map<Address>(dto);
             await _addressRepository.AddAsync(address);

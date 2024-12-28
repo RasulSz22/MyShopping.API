@@ -14,7 +14,7 @@ namespace Shop.Businness.Services.Interfaces
     public interface IAddressService
     {
         public Task<PagginatedResponse<GetAddressDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 5);
-        public Task<IResult> CreateAsync(GetAddressDTO dto);
+        public Task<IResult> CreateAsync(PostAddressDTO dto);
         public Task<IResult> RemoveAsync(int id);
         public Task<IResult> UpdateAsync(int id, PostAddressDTO dto);
         public Task<IDataResult<GetAddressDTO>> GetAsync(int id);
