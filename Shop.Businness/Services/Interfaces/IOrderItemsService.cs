@@ -12,7 +12,7 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface IOrderItemsService
     {
-        public Task<PagginatedResponse<GetOrderDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6);
+        public Task<PagginatedResponse<GetOrderItemDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6);
         public Task<IResult> CreateAsync(PostOrderItemDTO dto);
         public Task<IResult> RemoveAsync(int id);
         public Task<IResult> UpdateAsync(int id, PostOrderItemDTO dto);

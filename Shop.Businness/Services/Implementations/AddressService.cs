@@ -1,6 +1,10 @@
-﻿using Shop.Businness.Responses;
+﻿using AutoMapper;
+using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.SuccessResults;
+using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.CreateDTO;
 using Shop.DTO.GetDTO;
 using System;
@@ -13,11 +17,20 @@ namespace Shop.Businness.Services.Implementations
 {
     public class AddressService : IAddressService
     {
+        readonly IAddressRepository _addressRepository;
+        readonly IMapper _mapper;
 
-
-        public Task<IResult> CreateAsync(GetAddressDTO dto)
+        public AddressService(IAddressRepository addressRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _addressRepository = addressRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<IResult> CreateAsync(GetAddressDTO dto)
+        {
+            Address address = _mapper.Map<Address>(dto);
+            await _addressRepository.AddAsync(address);
+            return new SuccessResult("Address Successfully Added");
         }
 
         public Task<PagginatedResponse<GetAddressDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 5)
