@@ -23,7 +23,7 @@ namespace Shop.Businness.Services.Implementations
         {
             Discount discount = _mapper.Map<Discount>(dto);
             await _discountRepository.AddAsync(discount);
-            return new SuccessResult("Discount Successfully Added")
+            return new SuccessResult("Discount Successfully Added");
         }
 
         public Task<IDataResult<GetDiscountDTO>> GetAsync(int id)

@@ -1,5 +1,9 @@
-﻿using Shop.Businness.Services.Interfaces;
+﻿using AutoMapper;
+using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.SuccessResults;
+using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
 using Shop.DTO.PostDTO;
 using System;
@@ -12,9 +16,20 @@ namespace Shop.Businness.Services.Implementations
 {
     public class ShippingService : IShippingService
     {
-        public Task<IResult> CreateAsync(PostShippingDTO dto)
+        readonly IShippingRepository _shippingRepository;
+        readonly IMapper _mapper;
+
+        public ShippingService(IShippingRepository shippingRepository, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _shippingRepository = shippingRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<IResult> CreateAsync(PostShippingDTO dto)
+        {
+            Shipping shipping = _mapper.Map<Shipping>(dto);
+            await _shippingRepository.AddAsync(shipping);
+            return new SuccessResult("Shipping Successfully Added");
         }
 
         public Task<IDataResult<GetShippingDTO>> GetAsync(int id)

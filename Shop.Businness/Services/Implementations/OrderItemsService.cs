@@ -37,5 +37,10 @@ namespace Shop.Businness.Services.Implementations
         {
             throw new NotImplementedException();
         }
+
+        Task<PagginatedResponse<GetOrderItemDTO>> IOrderItemsService.GetAllAsync(int pageNumber, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
