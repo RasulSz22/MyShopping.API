@@ -1,4 +1,7 @@
-﻿using Shop.Businness.Services.Interfaces;
+﻿using Microsoft.AspNetCore.Identity;
+using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Models;
+using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
 using System;
 using System.Collections.Generic;
@@ -10,12 +13,26 @@ namespace Shop.Businness.Services.Implementations
 {
     public class LikedService : ILikedService
     {
-        public Task AddToWishList(int itemId, string itemType)
+
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IWishlistRepository _wishlistRepository;
+        private readonly IWishlistItemRepository _wishlistItemRepository;
+        private readonly IProductRepository _productRepository;
+
+        public LikedService(UserManager<AppUser> userManager, IWishlistRepository wishlistRepository, IWishlistItemRepository wishlistItemRepository, IProductRepository productRepository)
+        {
+            _userManager = userManager;
+            _wishlistRepository = wishlistRepository;
+            _wishlistItemRepository = wishlistItemRepository;
+            _productRepository = productRepository;
+        }
+
+        public async Task AddToWishList(int itemId, string itemType)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GetWishlistDTO> GetWishlist()
+        public async Task<GetWishlistDTO> GetWishlist()
         {
             throw new NotImplementedException();
         }

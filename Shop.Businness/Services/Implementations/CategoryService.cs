@@ -13,27 +13,27 @@ namespace Shop.Businness.Services.Implementations
 {
     public class CategoryService : ICategoryService
     {
-        public Task<IResult> CreateAsync(PostCategoryDTO dto)
+        public async Task<IResult> CreateAsync(PostCategoryDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<GetCategoryDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
+        public async Task<PagginatedResponse<GetCategoryDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetCategoryDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetCategoryDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostCategoryDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostCategoryDTO dto)
         {
             throw new NotImplementedException();
         }

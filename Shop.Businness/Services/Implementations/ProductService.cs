@@ -12,22 +12,22 @@ namespace Shop.Businness.Services.Implementations
 {
     public class ProductService : IProductService
     {
-        public Task<IResult> CreateAsync(PostProductDTO dto)
+        public async Task<IResult> CreateAsync(PostProductDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetProductDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetProductDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostProductDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostProductDTO dto)
         {
             throw new NotImplementedException();
         }

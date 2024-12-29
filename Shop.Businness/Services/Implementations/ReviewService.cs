@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
@@ -33,19 +34,46 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Review Successfully Added");
         }
 
-        public Task<IDataResult<GetReviewDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetReviewDTO>> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            var Review = _reviewRepository.GetAsync(x=>!x.IsDeleted && x.Id == id).Result;
+            if(Review == null)
+            {
+                return new ErrorDataResult<GetReviewDTO>("Review Not Found");
+            }
+            GetReviewDTO dTO = new GetReviewDTO()
+            {
+                Id = Review.Id,
+                ProductId = Review.ProductId,
+                AppUserId = Review.AppUserId,
+            };
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            Review review = await _reviewRepository.GetAsync(x => !x.IsDeleted && x.Id == id, "Product");
+
+            if (review == null) 
+            {
+                return new ErrorResult("Review Not Found");
+            }
+            review.IsDeleted = true;
+            await _reviewRepository.UpdateAsync(review);
+            return new SuccessResult("Review Removed Successfully");
         }
 
-        public Task<IResult> UpdateAsync(int id, PostReviewDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostReviewDTO dto)
         {
-            throw new NotImplementedException();
+            Review review = await _reviewRepository.GetAsync(x => !x.IsDeleted && x.Id == id);
+            if (review == null)
+            {
+                return new ErrorResult("Review Not Found");
+            }
+            review.Content = dto.Content;
+            review.AppUserId = dto.AppUserId;
+            review.ProductId = dto.ProductId;
+            await _reviewRepository.UpdateAsync(review);
+            return new SuccessResult("Review Successfully Updated");
         }
     }
 }

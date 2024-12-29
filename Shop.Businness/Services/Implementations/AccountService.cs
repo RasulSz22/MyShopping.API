@@ -15,77 +15,77 @@ namespace Shop.Businness.Services.Implementations
     {
 
 
-        public Task<bool> ChangeRole(string userId, string newRoleId)
+        public async Task<bool> ChangeRole(string userId, string newRoleId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> ChangeUserActivationStatus(string email, bool activate)
+        public async Task<IResult> ChangeUserActivationStatus(string email, bool activate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> ForgetPassword(string email)
+        public async Task<IResult> ForgetPassword(string email)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<AppUser>> GetAllAdmin(int count, int page)
+        public async Task<PagginatedResponse<AppUser>> GetAllAdmin(int count, int page)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<AppUser>> GetAllUsers(int count, int page)
+        public async Task<PagginatedResponse<AppUser>> GetAllUsers(int count, int page)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<ResetPasswordDTO>> GetResetPassword(string email, string token)
+        public async Task<IDataResult<ResetPasswordDTO>> GetResetPassword(string email, string token)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AppUser> GetUser(string id)
+        public async Task<AppUser> GetUser(string id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> GoogleCallback(string returnUrl = null)
+        public async Task<IResult> GoogleCallback(string returnUrl = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> Login(LoginDTO dto, bool IsAdminPanel)
+        public async Task<IResult> Login(LoginDTO dto, bool IsAdminPanel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> Logout()
+        public async Task<IResult> Logout()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RegisterWithGoogle(string returnUrl = null)
+        public async Task<IResult> RegisterWithGoogle(string returnUrl = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> ResetPasswordPost(ResetPasswordDTO dto)
+        public async Task<IResult> ResetPasswordPost(ResetPasswordDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<string>> SignUp(RegisterDTO dto, string role)
+        public async Task<IDataResult<string>> SignUp(RegisterDTO dto, string role)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> Update(UpdateDTO dto)
+        public async Task<IResult> Update(UpdateDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> VerifyEmail(string token, string email)
+        public async Task<IResult> VerifyEmail(string token, string email)
         {
             throw new NotImplementedException();
         }

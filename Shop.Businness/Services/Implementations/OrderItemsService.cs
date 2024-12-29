@@ -13,32 +13,32 @@ namespace Shop.Businness.Services.Implementations
 {
     public class OrderItemsService : IOrderItemsService
     {
-        public Task<IResult> CreateAsync(PostOrderItemDTO dto)
+        public async Task<IResult> CreateAsync(PostOrderItemDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<GetOrderDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
+        public async Task<PagginatedResponse<GetOrderDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetOrderItemDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetOrderItemDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostOrderItemDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostOrderItemDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        Task<PagginatedResponse<GetOrderItemDTO>> IOrderItemsService.GetAllAsync(int pageNumber, int pageSize)
+        public async Task<PagginatedResponse<GetOrderItemDTO>> IOrderItemsService.GetAllAsync(int pageNumber, int pageSize)
         {
             throw new NotImplementedException();
         }

@@ -13,22 +13,22 @@ namespace Shop.Businness.Services.Implementations
 {
     public class CartItemService : ICartItemService
     {
-        public Task<IResult> CreateAsync(PostCartItemDTO dto)
+        public async Task<IResult> CreateAsync(PostCartItemDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<GetCartItemDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
+        public async Task<PagginatedResponse<GetCartItemDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetCartItemDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetCartItemDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostCartItemDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostCartItemDTO dto)
         {
             throw new NotImplementedException();
         }

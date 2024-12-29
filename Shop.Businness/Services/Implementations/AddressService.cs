@@ -3,6 +3,7 @@ using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.CreateDTO;
@@ -33,24 +34,53 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Address Successfully Added");
         }
 
-        public Task<PagginatedResponse<GetAddressDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 5)
+        public async Task<PagginatedResponse<GetAddressDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 5)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetAddressDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetAddressDTO>> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            var Address = _addressRepository.GetAsync(x=> !x.IsDeleted && x.Id == id).Result;
+            if (Address == null)
+            {
+                return new ErrorDataResult<GetAddressDTO>("Address Not Found");
+            }
+            GetAddressDTO dto = new GetAddressDTO()
+            {
+                Id = Address.Id,
+                Street = Address.Street,
+                City = Address.City,
+                PostalCode = Address.PostalCode,
+            };
+            return new SuccessDataResult<GetAddressDTO>(dto,"Get Address");
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            Address address = await _addressRepository.GetAsync(x => !x.IsDeleted && x.Id == id);
+            if (address == null) 
+            {
+                return new ErrorResult("Address Not Found");
+            }
+            address.IsDeleted = true;
+            await _addressRepository.UpdateAsync(address);
+            return new SuccessResult("Address Removed");
         }
 
-        public Task<IResult> UpdateAsync(int id, PostAddressDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostAddressDTO dto)
         {
-            throw new NotImplementedException();
+            Address address = await _addressRepository.GetAsync(x => !x.IsDeleted && x.Id == id, "User");
+            if (address == null) 
+            {
+                return new ErrorResult("Address Not Found");
+            }
+            address.Street = dto.Street;
+            address.City = dto.City;
+            address.PostalCode = dto.PostalCode;
+            address.AppUserId = dto.AppUserId;
+            await _addressRepository.UpdateAsync(address);
+            return new SuccessResult("Address Successfully Updated");
         }
     }
 }

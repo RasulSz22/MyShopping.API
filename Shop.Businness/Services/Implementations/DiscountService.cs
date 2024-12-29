@@ -2,6 +2,7 @@
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
@@ -26,19 +27,46 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Discount Successfully Added");
         }
 
-        public Task<IDataResult<GetDiscountDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetDiscountDTO>> GetAsync(int id)
         {
-            throw new NotImplementedException();
+            var Discount = _discountRepository.GetAsync(x=>!x.IsDeleted && x.Id == id).Result;
+            if(Discount == null)
+            {
+                return new ErrorDataResult<GetDiscountDTO>("Review Not Found");
+            }
+
+            GetDiscountDTO dto = new GetDiscountDTO()
+            {
+                Id = Discount.Id,
+                Promocode = Discount.Promocode,
+                DiscountPercentage = Discount.DiscountPercentage,
+            };
+            return new SuccessDataResult<GetDiscountDTO>(dto,"Get Discount");
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            Discount discount = await _discountRepository.GetAsync(x => !x.IsDeleted && x.Id == id);
+            if (discount == null)
+            {
+                return new ErrorResult("Discount Not Found");
+            }
+            discount.IsDeleted = true;
+            await _discountRepository.UpdateAsync(discount);
+            return new SuccessResult("Discount Removed");
         }
 
-        public Task<IResult> UpdateAsync(int id, PostDiscountDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostDiscountDTO dto)
         {
-            throw new NotImplementedException();
+            Discount discount = await _discountRepository.GetAsync(x => !x.IsDeleted && x.Id == id, "Product");
+            if(discount == null)
+            {
+                return new ErrorResult("Discount Not Found");
+            }
+            discount.Promocode = dto.Promocode;
+            discount.DiscountPercentage = dto.DiscountPercentage;
+            await _discountRepository.UpdateAsync(discount);
+            return new SuccessResult("Discount Successfully Updated");
         }
     }
 }

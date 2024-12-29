@@ -12,22 +12,22 @@ namespace Shop.Businness.Services.Implementations
 {
     public class PaymentService : IPaymentService
     {
-        public Task<IResult> CreateAsync(PostPaymentDTO dto)
+        public async Task<IResult> CreateAsync(PostPaymentDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetPaymentDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetPaymentDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostPaymentDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostPaymentDTO dto)
         {
             throw new NotImplementedException();
         }

@@ -13,27 +13,27 @@ namespace Shop.Businness.Services.Implementations
 {
     public class ProductImageService : IProductImagesService
     {
-        public Task<IResult> CreateAsync(PostProductİmageDTO dto)
+        public async Task<IResult> CreateAsync(PostProductİmageDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PagginatedResponse<GetProductİmageDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
+        public async Task<PagginatedResponse<GetProductİmageDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IDataResult<GetProductİmageDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetProductİmageDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> UpdateAsync(int id, PostProductİmageDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostProductİmageDTO dto)
         {
             throw new NotImplementedException();
         }

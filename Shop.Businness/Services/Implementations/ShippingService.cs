@@ -2,6 +2,7 @@
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
@@ -32,19 +33,32 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Shipping Successfully Added");
         }
 
-        public Task<IDataResult<GetShippingDTO>> GetAsync(int id)
+        public async Task<IDataResult<GetShippingDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IResult> RemoveAsync(int id)
+        public async Task<IResult> RemoveAsync(int id)
         {
-            throw new NotImplementedException();
+            Shipping shipping = await _shippingRepository.GetAsync(x => !x.IsDeleted && x.Id == id);
+            if (shipping == null) 
+            {
+                return new ErrorResult("Shipping Not Found");
+            }
+            shipping.IsDeleted = true;
+            return new SuccessResult("Shipping Removed");
         }
 
-        public Task<IResult> UpdateAsync(int id, PostShippingDTO dto)
+        public async Task<IResult> UpdateAsync(int id, PostShippingDTO dto)
         {
-            throw new NotImplementedException();
+            Shipping shipping = await _shippingRepository.GetAsync(x => !x.IsDeleted && x.Id == id, "Product");
+            if(shipping == null)
+            {
+                return new ErrorResult("Shipping Not Found");
+            }
+            shipping.Status = dto.Status;
+            await _shippingRepository.UpdateAsync(shipping);
+            return new SuccessResult("Shipping Successfuly Updated");           
         }
     }
 }
