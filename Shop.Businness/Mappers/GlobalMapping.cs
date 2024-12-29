@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Shop.Core.Entities.Models;
 using Shop.DTO.CreateDTO;
 using Shop.DTO.GetDTO;
 using Shop.DTO.PostDTO;
-using Shop.DTO.PutDTO;
 
 namespace Shop.Businness.Mappers
 {
