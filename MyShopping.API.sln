@@ -3,15 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyShopping.API", "MyShopping.API\MyShopping.API.csproj", "{00AC8CFD-5A16-45BE-BE9F-B37701FCF89B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyShopping.API", "MyShopping.API\MyShopping.API.csproj", "{00AC8CFD-5A16-45BE-BE9F-B37701FCF89B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Businness", "Shop.Businness\Shop.Businness.csproj", "{D4C9FDE6-9C5B-4577-A896-271585B737B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Businness", "Shop.Businness\Shop.Businness.csproj", "{D4C9FDE6-9C5B-4577-A896-271585B737B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DataAccess", "Shop.DataAccess\Shop.DataAccess.csproj", "{0B4772AB-7094-4BA0-8802-B45576C3AEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.DataAccess", "Shop.DataAccess\Shop.DataAccess.csproj", "{0B4772AB-7094-4BA0-8802-B45576C3AEB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Core", "Shop.Core\Shop.Core.csproj", "{138B9747-021B-4EC4-9A25-5050D9C4F080}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Core", "Shop.Core\Shop.Core.csproj", "{138B9747-021B-4EC4-9A25-5050D9C4F080}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.DTO", "Shop.DTO\Shop.DTO.csproj", "{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.DTO", "Shop.DTO\Shop.DTO.csproj", "{D3A4E94C-56B8-4055-BFF0-AF83AB1479D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4E02C2F7-190B-4204-AEC1-0D019A4B1551}"
+	ProjectSection(SolutionItems) = preProject
+		test.txt = test.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
