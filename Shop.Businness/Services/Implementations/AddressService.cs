@@ -50,7 +50,6 @@ namespace Shop.Businness.Services.Implementations
                 PostalCode = x.PostalCode,
                 City = x.City,
                 Street = x.Street,
-                AppUserId = x.AppUserId,
             }).ToList();
             var pagginatedResponse = new PagginatedResponse<GetAddressDTO>(GetAddressDtos, paginatedAddresses.PageNumber,
                 paginatedAddresses.PageSize,
@@ -89,7 +88,7 @@ namespace Shop.Businness.Services.Implementations
 
         public async Task<IResult> UpdateAsync(int id, PostAddressDTO dto)
         {
-            Address address = await _addressRepository.GetAsync(x => !x.IsDeleted && x.Id == id, "User");
+            Address address = await _addressRepository.GetAsync(x => !x.IsDeleted && x.Id == id);
             if (address == null)
             {
                 return new ErrorResult("Address Not Found");
