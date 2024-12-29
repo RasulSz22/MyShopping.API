@@ -41,12 +41,13 @@ namespace Shop.Businness.Services.Implementations
             {
                 return new ErrorDataResult<GetReviewDTO>("Review Not Found");
             }
-            GetReviewDTO dTO = new GetReviewDTO()
+            GetReviewDTO dto = new GetReviewDTO()
             {
                 Id = Review.Id,
                 ProductId = Review.ProductId,
                 AppUserId = Review.AppUserId,
             };
+            return new SuccessDataResult<GetReviewDTO>(dto,"Get Review");
         }
 
         public async Task<IResult> RemoveAsync(int id)
