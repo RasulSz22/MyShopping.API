@@ -20,7 +20,6 @@ namespace Shop.DataAccess.ServiceRegistration
             });
 
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IProductRepository, ProductReposiroty>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<ICartItemRepository, CartItemRepository>();

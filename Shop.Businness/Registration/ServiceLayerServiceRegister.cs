@@ -15,7 +15,6 @@ namespace Shop.Businness.Registration
         public static void ServiceRegister(this IServiceCollection services)
         {
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IProductImagesService, ProductImageService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ICartItemService, CartItemService>();

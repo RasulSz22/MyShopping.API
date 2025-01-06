@@ -21,7 +21,6 @@ namespace Shop.DataAccess.Contexts
         public DbSet<Address> Address { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
-        public DbSet<ProductImage> ProductImageFiles { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Discount> Discounts { get; set; }

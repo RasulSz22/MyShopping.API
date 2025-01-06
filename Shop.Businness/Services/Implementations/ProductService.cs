@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using Shop.Businness.Extensions;
+using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
@@ -31,6 +34,30 @@ namespace Shop.Businness.Services.Implementations
             Product product = _mapper.Map<Product>(dto);
             await _productRepository.AddAsync(product);
             return new SuccessResult("Produc Successfully created");
+        }
+
+        public async Task<PagginatedResponse<GetProductDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
+        {
+            var query = _productRepository.GetQuery(x => !x.IsDeleted)
+                .AsNoTrackingWithIdentityResolution()
+                .Include(x => x.Category);
+            var totalCount = await query.CountAsync();
+            var paginatedProducts = await query.ToPagedListAsync(pageNumber, pageSize);
+            var GetProductDtos = paginatedProducts.Datas.Select(x=>
+            new GetProductDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                Stock = x.Stock,
+                Price = x.Price,
+                CategoryId = x.CategoryId,
+            }).ToList();
+            var paginatetResponse = new PagginatedResponse<GetProductDTO>(
+                GetProductDtos, paginatedProducts.PageNumber,
+                paginatedProducts.PageSize,
+                totalCount);
+            return paginatetResponse;
         }
 
         public async Task<IDataResult<GetProductDTO>> GetAsync(int id)

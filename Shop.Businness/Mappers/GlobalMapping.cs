@@ -25,9 +25,6 @@ namespace Shop.Businness.Mappers
             CreateMap<Product, GetProductDTO>().ReverseMap();
             CreateMap<Product, PostProductDTO>().ReverseMap();
 
-            CreateMap<ProductImage, GetProductİmageDTO>().ReverseMap();
-            CreateMap<ProductImage, PostProductİmageDTO>().ReverseMap();
-
             CreateMap<OrderItem, GetOrderItemDTO>().ReverseMap();
             CreateMap<OrderItem, PostOrderItemDTO>().ReverseMap();
 
