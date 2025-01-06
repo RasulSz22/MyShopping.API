@@ -16,5 +16,7 @@ namespace Shop.DTO.PutDTO
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int? DiscountId { get; set; }
+        public List<string> ProductImages { get; set; }
+        public string MainImage { get; set; }
     }
 }

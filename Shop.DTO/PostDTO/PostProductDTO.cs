@@ -4,6 +4,7 @@ using Shop.DTO.GetDTO;
 using Shop.DTO.PostDTO;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,5 +19,7 @@ namespace Shop.DTO.CreateDTO
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int DiscountId { get; set; }
+        public List<string> ProductImages { get; set; }
+        public string MainImage {  get; set; }
     }
 }
