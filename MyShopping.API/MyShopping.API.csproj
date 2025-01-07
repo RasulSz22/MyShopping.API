@@ -18,4 +18,9 @@
     <ProjectReference Include="..\Shop.Businness\Shop.Businness.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
 </Project>
