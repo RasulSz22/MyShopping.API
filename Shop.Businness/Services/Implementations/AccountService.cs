@@ -34,10 +34,10 @@ namespace Shop.Businness.Services.Implementations
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> ChangeUserActivationStatus(string email, bool activate)
-        {
-            throw new NotImplementedException();
-        }
+        //public async Task<IResult> ChangeUserActivationStatus(string email, bool activate)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public async Task<IResult> ForgetPassword(string email)
         {

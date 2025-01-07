@@ -24,6 +24,7 @@ namespace Shop.Businness.Registration
             services.AddScoped<ILikedService, LikedService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IDiscountService, DiscountService>();
+            services.AddScoped<IAccountService, AccountService>();
         }
     }
 }
