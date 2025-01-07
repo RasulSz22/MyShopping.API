@@ -1,4 +1,6 @@
-﻿using Shop.Businness.Responses;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
@@ -14,6 +16,10 @@ namespace Shop.Businness.Services.Implementations
     public class AccountService : IAccountService
     {
 
+        private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly IHttpContextAccessor _http;
 
         public async Task<bool> ChangeRole(string userId, string newRoleId)
         {
