@@ -21,6 +21,14 @@ namespace Shop.Businness.Services.Implementations
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IHttpContextAccessor _http;
 
+        public AccountService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IHttpContextAccessor http)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
+            _http = http;
+        }
+
         public async Task<bool> ChangeRole(string userId, string newRoleId)
         {
             throw new NotImplementedException();
