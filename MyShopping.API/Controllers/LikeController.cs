@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Businness.Services.Implementations;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.DataAccess.Contexts;
@@ -31,6 +32,24 @@ namespace MyShopping.API.Controllers
                 return NotFound(new { message = "Wishlist is empty or not found." });
             }
             return Ok(dto);
+        }
+
+        [HttpPost("wishlist/add")]
+        public async Task<IActionResult> AddToWishlist(int itemId, string itemType)
+        {
+            try
+            {
+                await _service.AddToWishList(itemId, itemType);
+                return Ok(new { message = "Product successfully added to wishlist." });
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

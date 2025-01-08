@@ -12,5 +12,9 @@ namespace Shop.DTO.GetDTO
         public int Id { get; set; }
         public string ProductName { get; set; }
         public bool IsLiked { get; set; }
+        public int ProductId { get; set; }       
+        public string ProductDescription { get; set; } 
+        public decimal ProductPrice { get; set; } 
+        public int ProductStock { get; set; }
     }
 }

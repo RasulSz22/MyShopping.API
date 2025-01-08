@@ -36,7 +36,7 @@ namespace Shop.DataAccess.Repositories.Implementations
             return await query.FirstOrDefaultAsync();
         }
 
-        public IQueryable<T> GetQuery(Expression<Func<T,bool>> expression)
+        public IQueryable<T> GetQuery(Expression<Func<T, bool>> expression)
         {
             return _context.Set<T>().Where(expression);
         }
@@ -56,5 +56,26 @@ namespace Shop.DataAccess.Repositories.Implementations
         {
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<List<T>> GetListAsync(
+       Expression<Func<T, bool>> filter = null,
+       Func<IQueryable<T>, IQueryable<T>> include = null)
+        {
+            IQueryable<T> query = _context.Set<T>();
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            return await query.ToListAsync();
+        }
+
     }
+
 }

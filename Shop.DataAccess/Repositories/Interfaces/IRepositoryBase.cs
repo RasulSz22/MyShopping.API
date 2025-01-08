@@ -15,5 +15,9 @@ namespace Shop.DataAccess.Repositories.Interfaces
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> expression);
         public Task RemoveAsync(T entity);
         public Task<int> SaveChangesAsync();
+        Task<List<T>> GetListAsync(
+        Expression<Func<T, bool>> filter = null,
+        Func<IQueryable<T>, IQueryable<T>> include = null
+    );
     }
 }
