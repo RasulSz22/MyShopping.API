@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.DataAccess.Repositories.Interfaces;
@@ -18,6 +19,7 @@ namespace Shop.Businness.Services.Implementations
         private readonly IWishlistRepository _wishlistRepository;
         private readonly IWishlistItemRepository _wishlistItemRepository;
         private readonly IProductRepository _productRepository;
+        readonly IHttpContextAccessor _http;
 
         public LikedService(UserManager<AppUser> userManager, IWishlistRepository wishlistRepository, IWishlistItemRepository wishlistItemRepository, IProductRepository productRepository)
         {

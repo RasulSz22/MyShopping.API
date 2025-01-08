@@ -34,11 +34,6 @@ namespace Shop.Businness.Services.Implementations
             throw new NotImplementedException();
         }
 
-        //public async Task<IResult> ChangeUserActivationStatus(string email, bool activate)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public async Task<IResult> ForgetPassword(string email)
         {
             throw new NotImplementedException();
@@ -64,11 +59,6 @@ namespace Shop.Businness.Services.Implementations
             throw new NotImplementedException();
         }
 
-        //public async Task<IResult> GoogleCallback(string returnUrl = null)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         public async Task<IResult> Login(LoginDTO dto, bool IsAdminPanel)
         {
             throw new NotImplementedException();
@@ -78,11 +68,6 @@ namespace Shop.Businness.Services.Implementations
         {
             throw new NotImplementedException();
         }
-
-        //public async Task<IResult> RegisterWithGoogle(string returnUrl = null)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         public async Task<IResult> ResetPasswordPost(ResetPasswordDTO dto)
         {
