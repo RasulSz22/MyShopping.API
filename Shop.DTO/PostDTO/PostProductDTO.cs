@@ -21,5 +21,6 @@ namespace Shop.DTO.CreateDTO
         public int DiscountId { get; set; }
         public List<string> ProductImages { get; set; }
         public string MainImage {  get; set; }
+        public int ProductId {  get; set; }
     }
 }

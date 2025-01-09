@@ -6,6 +6,7 @@ using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
 using Shop.DataAccess.Contexts;
 using Shop.DTO.GetDTO;
+using Shop.DTO.PostDTO;
 
 namespace MyShopping.API.Controllers
 {
@@ -35,11 +36,11 @@ namespace MyShopping.API.Controllers
         }
 
         [HttpPost("wishlist/add")]
-        public async Task<IActionResult> AddToWishlist(int itemId, string itemType)
+        public async Task<IActionResult> AddToWishlist(PostWishlistDTO dto)
         {
             try
             {
-                await _service.AddToWishList(itemId, itemType);
+                await _service.AddToWishList(dto);
                 return Ok(new { message = "Product successfully added to wishlist." });
             }
             catch (UnauthorizedAccessException ex)

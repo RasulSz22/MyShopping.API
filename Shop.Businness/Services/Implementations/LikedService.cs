@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
+using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
+using Shop.Core.Utilities.Results.Concrete.SuccessResults;
+using Shop.DataAccess.Repositories.Implementations;
 using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
+using Shop.DTO.PostDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +26,8 @@ namespace Shop.Businness.Services.Implementations
         private readonly IWishlistRepository _wishlistRepository;
         private readonly IWishlistItemRepository _wishlistItemRepository;
         private readonly IProductRepository _productRepository;
-        readonly IHttpContextAccessor _http;
+        private readonly IHttpContextAccessor _http;
+        private readonly IMapper _mapper;
 
         public LikedService(UserManager<AppUser> userManager, IWishlistRepository wishlistRepository, IWishlistItemRepository wishlistItemRepository, IProductRepository productRepository)
         {
@@ -30,38 +37,38 @@ namespace Shop.Businness.Services.Implementations
             _productRepository = productRepository;
         }
 
-        public async Task AddToWishList(int itemId, string itemType)
-        {
-            if (!_http.HttpContext.User.Identity.IsAuthenticated)
-                throw new UnauthorizedAccessException("User is not authenticated.");
+        //public async Task AddToWishList(int itemId, string itemType)
+        //{
+        //    if (!_http.HttpContext.User.Identity.IsAuthenticated)
+        //        throw new UnauthorizedAccessException("User is not authenticated.");
 
-            var username = _http.HttpContext.User.Identity.Name;
-            AppUser appUser = await _userManager.FindByNameAsync(username);
-            if (appUser == null)
-                throw new Exception("User not found.");
+        //    var username = _http.HttpContext.User.Identity.Name;
+        //    AppUser appUser = await _userManager.FindByNameAsync(username);
+        //    if (appUser == null)
+        //        throw new Exception("User not found.");
 
-            var wishlist = await _wishlistRepository.GetAsync(x => x.AppUserId == appUser.Id);
-            if (wishlist == null)
-            {
-                wishlist = new Wishlist { AppUserId = appUser.Id };
-                await _wishlistRepository.AddAsync(wishlist);
-            }
+        //    var wishlist = await _wishlistRepository.GetAsync(x => x.AppUserId == appUser.Id);
+        //    if (wishlist == null)
+        //    {
+        //        wishlist = new Wishlist { AppUserId = appUser.Id };
+        //        await _wishlistRepository.AddAsync(wishlist);
+        //    }
 
-            var product = await _productRepository.GetAsync(x => x.Id == itemId && !x.IsDeleted);
-            if (product == null)
-                throw new Exception("Product not found.");
+        //    var product = await _productRepository.GetAsync(x => x.Id == itemId && !x.IsDeleted);
+        //    if (product == null)
+        //        throw new Exception("Product not found.");
 
-            var existingItem = await _wishlistItemRepository.GetAsync(x => x.WishlistId == wishlist.Id && x.ProductId == itemId);
-            if (existingItem != null)
-                throw new Exception("Product is already in the wishlist.");
+        //    var existingItem = await _wishlistItemRepository.GetAsync(x => x.WishlistId == wishlist.Id && x.ProductId == itemId);
+        //    if (existingItem != null)
+        //        throw new Exception("Product is already in the wishlist.");
 
-            var wishlistItem = new WishlistItem
-            {
-                WishlistId = wishlist.Id,
-                ProductId  = product.Id,
-            };
-            await _wishlistItemRepository.AddAsync(wishlistItem);
-        }
+        //    var wishlistItem = new WishlistItem
+        //    {
+        //        WishlistId = wishlist.Id,
+        //        ProductId  = product.Id,
+        //    };
+        //    await _wishlistItemRepository.AddAsync(wishlistItem);
+        //}
 
         public async Task<GetWishlistDTO> GetWishlist()
         {
@@ -111,6 +118,21 @@ namespace Shop.Businness.Services.Implementations
                 AppUserName = appUser.UserName,
                 WishListItems = itemDtos
             };
+        }
+
+        public async Task<IResult> AddToWishList(PostWishlistDTO dto)
+        {
+            try
+            {
+                var wishlist = _mapper.Map<Wishlist>(dto);
+                await _wishlistRepository.AddAsync(wishlist);
+                await _wishlistRepository.SaveChangesAsync();
+                return new SuccessResult("Wishlist created successfully.");
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult("Failed to create shipping.");
+            }
         }
     }
 }

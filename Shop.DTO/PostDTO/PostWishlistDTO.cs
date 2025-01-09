@@ -10,6 +10,6 @@ namespace Shop.DTO.PostDTO
     public record PostWishlistDTO
     {
         public string AppUserId { get; set; }
-        public List<WishlistItem> WishListItems { get; set; }
+        //public List<WishlistItem> WishListItems { get; set; }
     }
 }
