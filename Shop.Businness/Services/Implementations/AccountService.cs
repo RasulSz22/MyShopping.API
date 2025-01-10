@@ -118,7 +118,7 @@ namespace Shop.Businness.Services.Implementations
 
                         foreach (var role in roles)
                         {
-                            if (role == "Employee" || role == "Owner")
+                            if (role == "Admin" || role == "Customer")
                             {
                                 usersInRoles.Add(user);
                             }
@@ -196,7 +196,7 @@ namespace Shop.Businness.Services.Implementations
                 if (!checkUser.IsActive)
                     return new ErrorResult("Your account is blocked! Please contact the administrator.");
 
-                if ((IsAdminPanel && (await IsUserInRole(checkUser, "Owner") || await IsUserInRole(checkUser, "Employee"))))
+                if ((IsAdminPanel && (await IsUserInRole(checkUser, "Admin") || await IsUserInRole(checkUser, "Customer"))))
                 {
                     return new ErrorResult(IsAdminPanel ? "You are not authorized to access the admin panel." : "You are not authorized to access the user panel. Please create a user for yourself.");
                 }
