@@ -11,6 +11,7 @@
 //using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 //using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 //using System.Text.RegularExpressions;
+//using Microsoft.AspNetCore.Hosting;
 
 //namespace Shop.Core.Helper.MailHelper
 //{
@@ -18,6 +19,7 @@
 //    {
 //        private readonly IWebHostEnvironment _env;
 //        private readonly IEmailConfiguration _emailConfiguration;
+
 //        public EmailHelper(IEmailConfiguration emailConfiguration, IWebHostEnvironment env)
 //        {
 //            _emailConfiguration = emailConfiguration;
@@ -26,91 +28,76 @@
 
 //        public bool IsValidEmail(string email)
 //        {
-//            if (string.IsNullOrEmpty(email)) return false;
-//            var pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-//            Regex regex = new(pattern);
-//            return regex.IsMatch(email);
+//            if (string.IsNullOrWhiteSpace(email)) return false;
+//            const string pattern = @"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+//            return Regex.IsMatch(email, pattern);
 //        }
 
 //        public async Task<IResult> SendEmailAsync(string email, string url, string subject, string token)
 //        {
+//            if (!IsValidEmail(email))
+//                return new ErrorResult("Invalid email address.");
+
 //            try
 //            {
-//                string senderEmail = _emailConfiguration.Email;
-//                string senderPassword = _emailConfiguration.Password;
-//                int port = _emailConfiguration.Port;
-//                string smtp = _emailConfiguration.SmtpServer;
+//                string templatePath = Path.Combine(_env.WebRootPath, "Templates", "Verify.html");
+//                if (!File.Exists(templatePath))
+//                    return new ErrorResult("Email template not found.");
 
+//                string templateContent = await File.ReadAllTextAsync(templatePath);
+//                string body = templateContent.Replace("{{url}}", url).Replace("{{token}}", token);
 
 //                var message = new MimeMessage();
-//                message.From.Add(new MailboxAddress("HelloJob", senderEmail));
+//                message.From.Add(new MailboxAddress("HelloJob", _emailConfiguration.Email));
 //                message.To.Add(MailboxAddress.Parse(email));
 //                message.Subject = subject;
-//                message.Importance = MessageImportance.High;
-//                string mybody = string.Empty;
-//                string path = Path.Combine(_env.WebRootPath, "Templates", "Verify.html");
-//                using (StreamReader SourceReader = System.IO.File.OpenText(path))
-//                {
-//                    mybody = SourceReader.ReadToEnd();
-//                }
-//                mybody = mybody.Replace("{{url}}", url);
 //                message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
 //                {
-//                    Text = mybody
+//                    Text = body
 //                };
-//                using (var client = new SmtpClient())
-//                {
-//                    await client.ConnectAsync(smtp, port, SecureSocketOptions.StartTls);
-//                    await client.AuthenticateAsync(senderEmail, senderPassword);
-//                    await client.SendAsync(message);
-//                    await client.DisconnectAsync(true);
-//                }
 
-//                return new SuccessResult("Email send succesfully!");
+//                return await SendEmailInternalAsync(message);
 //            }
 //            catch (Exception ex)
 //            {
 //                return new ErrorResult(ex.Message);
 //            }
-
 //        }
 
-//        public async Task<IResult> SendNotificationEmailAsync(string email, string subject, string message)
+//        public async Task<IResult> SendNotificationEmailAsync(string email, string subject, string messageText)
+//        {
+//            if (!IsValidEmail(email))
+//                return new ErrorResult("Invalid email address.");
+
+//            var message = new MimeMessage();
+//            message.From.Add(new MailboxAddress("HelloJob", _emailConfiguration.Email));
+//            message.To.Add(MailboxAddress.Parse(email));
+//            message.Subject = subject;
+//            message.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
+//            {
+//                Text = messageText
+//            };
+
+//            return await SendEmailInternalAsync(message);
+//        }
+
+//        private async Task<IResult> SendEmailInternalAsync(MimeMessage message)
 //        {
 //            try
 //            {
-//                string senderEmail = _emailConfiguration.Email;
-//                string senderPassword = _emailConfiguration.Password;
-//                int port = _emailConfiguration.Port;
-//                string smtp = _emailConfiguration.SmtpServer;
+//                using var client = new SmtpClient();
+//                await client.ConnectAsync(_emailConfiguration.SmtpServer, _emailConfiguration.Port, SecureSocketOptions.StartTls);
+//                await client.AuthenticateAsync(_emailConfiguration.Email, _emailConfiguration.Password);
+//                await client.SendAsync(message);
+//                await client.DisconnectAsync(true);
 
-//                var notificationMessage = new MimeMessage();
-//                notificationMessage.From.Add(new MailboxAddress("HelloJob", senderEmail));
-//                notificationMessage.To.Add(MailboxAddress.Parse(email));
-//                notificationMessage.Subject = subject;
-//                notificationMessage.Importance = MessageImportance.High;
-//                notificationMessage.Body = new TextPart(MimeKit.Text.TextFormat.Plain)
-//                {
-//                    Text = message
-//                };
-
-//                using (var client = new SmtpClient())
-//                {
-//                    await client.ConnectAsync(smtp, port, SecureSocketOptions.StartTls);
-//                    await client.AuthenticateAsync(senderEmail, senderPassword);
-//                    await client.SendAsync(notificationMessage);
-//                    await client.DisconnectAsync(true);
-//                }
-
-//                return new SuccessResult("Melumatlandirma e-postası ugurla gönderildi!");
+//                return new SuccessResult("Email successfully sent!");
 //            }
 //            catch (Exception ex)
 //            {
 //                return new ErrorResult(ex.Message);
 //            }
 //        }
-
-
 //    }
 //}
 
