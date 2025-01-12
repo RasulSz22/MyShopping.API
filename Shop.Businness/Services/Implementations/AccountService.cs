@@ -1,8 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using NETCore.MailKit.Core;
 using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
+using Shop.Core.Helper.MailHelper;
 using Shop.Core.Utilities.Results.Abstract;
 using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
@@ -23,13 +30,17 @@ namespace Shop.Businness.Services.Implementations
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IHttpContextAccessor _http;
+        private readonly IEmailHelper _emailService;
+        private readonly IUrlHelper _urlHelper;
 
-        public AccountService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IHttpContextAccessor http)
+        public AccountService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IHttpContextAccessor http, IEmailHelper emailService, IUrlHelper urlHelper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
             _http = http;
+            _emailService = emailService;
+            _urlHelper = urlHelper;
         }
 
         public async Task<bool> ChangeRole(string userId, string newRoleId)
@@ -255,7 +266,41 @@ namespace Shop.Businness.Services.Implementations
 
         public async Task<IDataResult<string>> SignUp(RegisterDTO dto, string role)
         {
-            throw new NotImplementedException();
+           var isValidEmail = _emailService.IsValidEmail(dto.Email);
+           if (!isValidEmail) return new ErrorDataResult<string>(message:"Invalid Email!");
+            var chekUser = await _userManager.FindByEmailAsync(dto.Email);
+            if (chekUser != null) return new ErrorDataResult<string>(message: "Email is already used!");
+            AppUser appUser = new AppUser()
+            {
+                UserName = dto.Username,
+                Email = dto.Email,
+                IsActive = true,
+            };
+            var result = await _userManager.CreateAsync(appUser,dto.Password);
+            if (!result.Succeeded) return new ErrorDataResult<string>(message: string.Join('\n', result.Errors.Select(x => x.Description)));
+            var hasUserRole = await _userManager.IsInRoleAsync(appUser, role);
+            if(!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
+            var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+
+            if(urlHelperFactory != null)
+            {
+                var endpoint = _http.HttpContext.GetEndpoint();
+                if(endpoint != null)
+                {
+                    var actionDescriptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
+                    if(actionDescriptor != null)
+                    {
+                        var actionContext = new ActionContext(_http.HttpContext,_http.HttpContext.GetRouteData(),actionDescriptor);
+                        var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
+                        var url = urlHelper.Action("VerifyEmail", "Account", new {email = appUser.Email,token = token}, protocol: _http.HttpContext.Request.Scheme);
+                        await _emailService.SendEmailAsync(appUser.Email, url, "Verify Email", token);
+                    }
+                }
+            }
+            return new SuccessDataResult<string>(
+                message: "RegisterDto successfull!"
+                );
         }
 
         public async Task<IResult> Update(UpdateDTO dto)
