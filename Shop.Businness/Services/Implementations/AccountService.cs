@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IResult = Shop.Core.Utilities.Results.Abstract.IResult;
 
 namespace Shop.Businness.Services.Implementations
 {

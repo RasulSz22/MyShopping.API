@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IResult = Shop.Core.Utilities.Results.Abstract.IResult;
 
 namespace Shop.Businness.Services.Implementations
 {
@@ -37,38 +38,6 @@ namespace Shop.Businness.Services.Implementations
             _productRepository = productRepository;
         }
 
-        //public async Task AddToWishList(int itemId, string itemType)
-        //{
-        //    if (!_http.HttpContext.User.Identity.IsAuthenticated)
-        //        throw new UnauthorizedAccessException("User is not authenticated.");
-
-        //    var username = _http.HttpContext.User.Identity.Name;
-        //    AppUser appUser = await _userManager.FindByNameAsync(username);
-        //    if (appUser == null)
-        //        throw new Exception("User not found.");
-
-        //    var wishlist = await _wishlistRepository.GetAsync(x => x.AppUserId == appUser.Id);
-        //    if (wishlist == null)
-        //    {
-        //        wishlist = new Wishlist { AppUserId = appUser.Id };
-        //        await _wishlistRepository.AddAsync(wishlist);
-        //    }
-
-        //    var product = await _productRepository.GetAsync(x => x.Id == itemId && !x.IsDeleted);
-        //    if (product == null)
-        //        throw new Exception("Product not found.");
-
-        //    var existingItem = await _wishlistItemRepository.GetAsync(x => x.WishlistId == wishlist.Id && x.ProductId == itemId);
-        //    if (existingItem != null)
-        //        throw new Exception("Product is already in the wishlist.");
-
-        //    var wishlistItem = new WishlistItem
-        //    {
-        //        WishlistId = wishlist.Id,
-        //        ProductId  = product.Id,
-        //    };
-        //    await _wishlistItemRepository.AddAsync(wishlistItem);
-        //}
 
         public async Task<GetWishlistDTO> GetWishlist()
         {
@@ -133,6 +102,11 @@ namespace Shop.Businness.Services.Implementations
             {
                 return new ErrorResult("Failed to create shipping.");
             }
+        }
+
+        Task<Core.Utilities.Results.Abstract.IResult> ILikedService.AddToWishList(PostWishlistDTO dto)
+        {
+            throw new NotImplementedException();
         }
     }
 }

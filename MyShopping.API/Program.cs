@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Shop.DataAccess.Contexts;
 using Shop.Businness.Services.Interfaces;
 using Shop.Businness.Services.Implementations;
+using Shop.Core.Helper.MailHelper;
 namespace MyShopping.API
 {
     public class Program
