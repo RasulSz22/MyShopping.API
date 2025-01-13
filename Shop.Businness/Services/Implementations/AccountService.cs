@@ -68,7 +68,33 @@ namespace Shop.Businness.Services.Implementations
 
         public async Task<IResult> ForgetPassword(string email)
         {
-            throw new NotImplementedException();
+            if (email is null)
+            {
+                return new ErrorResult("Please Enter Email!");
+            }
+
+            var isValidEmail = _emailService.IsValidEmail(email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return new ErrorResult("Email is not registered!");
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            if (token is null) return new ErrorResult("Token is not generated");
+            var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+            if(urlHelperFactory != null)
+            {
+                var endpoint = _http.HttpContext.GetEndpoint();
+                if(endpoint != null)
+                {
+                    var actionDesciptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
+                    if(actionDesciptor != null)
+                    {
+                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDesciptor);
+                        var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
+                        var url = urlHelper.Action("Reset Password", "Account", new { email = user.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
+                        await _emailService.SendEmailAsync(user.Email, url,"Verify Email for resetpassword",token);
+                    }
+                }
+            }
+            return new SuccessResult();
         }
 
         public async Task<PagginatedResponse<AppUser>> GetAllAdmin(int count, int page)
@@ -266,8 +292,8 @@ namespace Shop.Businness.Services.Implementations
 
         public async Task<IDataResult<string>> SignUp(RegisterDTO dto, string role)
         {
-           var isValidEmail = _emailService.IsValidEmail(dto.Email);
-           if (!isValidEmail) return new ErrorDataResult<string>(message:"Invalid Email!");
+            var isValidEmail = _emailService.IsValidEmail(dto.Email);
+            if (!isValidEmail) return new ErrorDataResult<string>(message: "Invalid Email!");
             var chekUser = await _userManager.FindByEmailAsync(dto.Email);
             if (chekUser != null) return new ErrorDataResult<string>(message: "Email is already used!");
             AppUser appUser = new AppUser()
@@ -276,24 +302,24 @@ namespace Shop.Businness.Services.Implementations
                 Email = dto.Email,
                 IsActive = true,
             };
-            var result = await _userManager.CreateAsync(appUser,dto.Password);
+            var result = await _userManager.CreateAsync(appUser, dto.Password);
             if (!result.Succeeded) return new ErrorDataResult<string>(message: string.Join('\n', result.Errors.Select(x => x.Description)));
             var hasUserRole = await _userManager.IsInRoleAsync(appUser, role);
-            if(!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
+            if (!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
             string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
             var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
 
-            if(urlHelperFactory != null)
+            if (urlHelperFactory != null)
             {
                 var endpoint = _http.HttpContext.GetEndpoint();
-                if(endpoint != null)
+                if (endpoint != null)
                 {
                     var actionDescriptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
-                    if(actionDescriptor != null)
+                    if (actionDescriptor != null)
                     {
-                        var actionContext = new ActionContext(_http.HttpContext,_http.HttpContext.GetRouteData(),actionDescriptor);
+                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDescriptor);
                         var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
-                        var url = urlHelper.Action("VerifyEmail", "Account", new {email = appUser.Email,token = token}, protocol: _http.HttpContext.Request.Scheme);
+                        var url = urlHelper.Action("VerifyEmail", "Account", new { email = appUser.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
                         await _emailService.SendEmailAsync(appUser.Email, url, "Verify Email", token);
                     }
                 }
@@ -341,7 +367,17 @@ namespace Shop.Businness.Services.Implementations
 
         public async Task<IResult> VerifyEmail(string token, string email)
         {
-            throw new NotImplementedException();
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return new ErrorResult("User Not Found");
+            var res = await _userManager.ConfirmEmailAsync(appUser, token);
+            if (!res.Succeeded)
+            {
+                var errors = string.Join(",", res.Errors.Select(e => e.Description));
+                return new ErrorResult($"Confirm Email is Invalid : {errors}");
+            }
+            appUser.EmailConfirmed = true;
+            await _signInManager.SignInAsync(appUser, true);
+            return new SuccessResult("Email Accepted and Signed In");
         }
     }
 }
