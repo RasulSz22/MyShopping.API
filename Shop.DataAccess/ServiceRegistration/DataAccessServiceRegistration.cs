@@ -30,6 +30,7 @@ namespace Shop.DataAccess.ServiceRegistration
             services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IDiscountRepository, DiscountRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
 
             services.AddIdentityCore<AppUser>(options =>

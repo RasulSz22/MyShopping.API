@@ -8,6 +8,8 @@ using Shop.DataAccess.Contexts;
 using Shop.Businness.Services.Interfaces;
 using Shop.Businness.Services.Implementations;
 using Shop.Core.Helper.MailHelper;
+using Microsoft.OpenApi.Models;
+using MyShopping.API.Filter;
 namespace MyShopping.API
 {
     public class Program
@@ -22,6 +24,18 @@ namespace MyShopping.API
             builder.Services.AddAutoMapper(typeof(GlobalMapping));
             builder.Services.DataAccessServiceRegister(builder.Configuration);
             builder.Services.ServiceRegister();
+
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Dosya Yükleme API",
+                    Version = "v1"
+                });
+
+               options.OperationFilter<FileUploadOperationFilter>();
+            });
+
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<MyShoppingAPIDbContext>()
                 .AddDefaultTokenProviders();

@@ -48,7 +48,7 @@ namespace MyShopping.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct([FromBody] PostProductDTO productDto)
+        public async Task<IActionResult> AddProduct([FromForm] PostProductDTO productDto)
         {
             if (!ModelState.IsValid)
             {

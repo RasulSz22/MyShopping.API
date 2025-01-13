@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Shop.Core.Entities.Models;
 using Shop.DTO.CreateDTO;
 using Shop.DTO.GetDTO;
@@ -24,6 +25,8 @@ namespace Shop.Businness.Mappers
 
             CreateMap<Product, GetProductDTO>().ReverseMap();
             CreateMap<Product, PostProductDTO>().ReverseMap();
+            CreateMap<PostProductDTO, Product>()
+           .ForMember(dest => dest.ProductImages, opt => opt.MapFrom(src => ConvertFilesToProductImages(src.ProductImages)));
 
             CreateMap<OrderItem, GetOrderItemDTO>().ReverseMap();
             CreateMap<OrderItem, PostOrderItemDTO>().ReverseMap();
@@ -51,6 +54,25 @@ namespace Shop.Businness.Mappers
 
             CreateMap<WishlistItem, GetWishlistItemDTO>().ReverseMap();
             CreateMap<WishlistItem, PostWishlistItemDTO>().ReverseMap();
+        }
+        private List<ProductImage> ConvertFilesToProductImages(List<IFormFile>? files)
+        {
+            var productImages = new List<ProductImage>();
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(memoryStream);
+                        productImages.Add(new ProductImage
+                        {
+                            Image = memoryStream.ToString(),
+                        });
+                    }
+                }
+            }
+            return productImages;
         }
     }
 }

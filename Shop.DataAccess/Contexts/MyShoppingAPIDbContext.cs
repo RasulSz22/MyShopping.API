@@ -30,6 +30,7 @@ namespace Shop.DataAccess.Contexts
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<WishlistItem> WishlistItem { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ProductImage> ProductImages { get; set; }
 
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

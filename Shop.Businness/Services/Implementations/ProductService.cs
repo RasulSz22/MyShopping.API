@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Shop.Businness.Extensions;
 using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
 using Shop.Core.Entities.Models;
+using Shop.Core.Helper;
 using Shop.Core.Utilities.Results.Abstract;
 using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
@@ -20,18 +22,65 @@ namespace Shop.Businness.Services.Implementations
 {
     public class ProductService : IProductService
     {
+        private readonly IWebHostEnvironment _env;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IWebHostEnvironment env, IProductRepository productRepository, IMapper mapper)
         {
+            _env = env;
             _productRepository = productRepository;
             _mapper = mapper;
         }
 
         public async Task<IResult> CreateAsync(PostProductDTO dto)
         {
+
             var product = _mapper.Map<Product>(dto);
+            if (dto.MainImage == null)
+            {
+                return new ErrorResult ("The field image is required" );
+            }
+            if (dto.ProductImages == null || dto.ProductImages.Count() == 0)
+            {
+                return new ErrorResult("The field image is required");
+            }
+            if (!dto.MainImage.IsImage())
+            {
+                return new ErrorResult ("The image is not valid" );
+            }
+            if (dto.MainImage.IsSizeOk(1))
+            {
+                return new ErrorResult( "Size of image is not valid" );
+            }
+
+            string mainImage = dto.MainImage.SaveFile(_env.WebRootPath, "Images/Product");
+            product.ProductImages.Add(new ProductImage
+            {
+                Image = mainImage,
+                IsMain = true,
+                Product = product,
+            });
+
+
+            foreach (var item in dto.ProductImages)
+            {
+                if (!item.IsImage())
+                {
+                    return new ErrorResult("The image is not valid");
+                }
+                if (item.IsSizeOk(1))
+                {
+                    return new ErrorResult("Size of Image is not valid");
+                }
+                string image = item.SaveFile(_env.WebRootPath, "Images/Product");
+                product.ProductImages.Add(new ProductImage
+                {
+                    Image = image,
+                    IsMain = false,
+                    Product = product
+                });
+            }
             await _productRepository.AddAsync(product);
             return new SuccessResult("Product successfully created");
         }
