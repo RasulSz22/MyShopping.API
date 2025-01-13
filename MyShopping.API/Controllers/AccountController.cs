@@ -67,24 +67,6 @@ namespace MyShopping.API.Controllers
             return Ok(new { Message = "Login successful." });
         }
 
-
-
-        [HttpGet("google-response")]
-        public async Task<IActionResult> GoogleResponse()
-        {
-            var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-            var claims = result.Principal.Identities.FirstOrDefault()?.Claims.Select(claim => new
-            {
-                claim.Issuer,
-                claim.OriginalIssuer,
-                claim.Type,
-                claim.Value
-            });
-
-            return Ok(claims);
-        }
-
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> LogOut()
