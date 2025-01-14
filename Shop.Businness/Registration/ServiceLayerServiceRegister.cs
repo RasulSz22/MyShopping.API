@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NETCore.MailKit.Core;
 using Shop.Businness.Services.Implementations;
 using Shop.Businness.Services.Interfaces;
+using Shop.Core.Helper.MailHelper;
 using Shop.DataAccess.Repositories.Implementations;
 using Shop.DataAccess.Repositories.Interfaces;
 using System;
@@ -27,7 +29,7 @@ namespace Shop.Businness.Registration
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IProductImageService, ProductImageService>();
-            //services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountService, AccountService>();
             //services.AddHttpContextAccessor();
         }
     }

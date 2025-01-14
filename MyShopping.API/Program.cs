@@ -9,6 +9,7 @@ using Shop.Businness.Services.Implementations;
 using Shop.Core.Helper.MailHelper;
 using Microsoft.OpenApi.Models;
 using MyShopping.API.Filter;
+using NETCore.MailKit.Core;
 namespace MyShopping.API
 {
     public class Program
@@ -17,13 +18,14 @@ namespace MyShopping.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddControllers();    
+            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddAutoMapper(typeof(GlobalMapping));
             builder.Services.DataAccessServiceRegister(builder.Configuration);
             builder.Services.ServiceRegister();
-
+            builder.Services.AddScoped<IEmailService, EmailService>();
+            builder.Services.AddScoped<IEmailHelper, EmailHelper>();
 
             builder.Services.AddSwaggerGen(swagger =>
             {
@@ -63,7 +65,7 @@ namespace MyShopping.API
             builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<MyShoppingAPIDbContext>()
                 .AddDefaultTokenProviders();
-  
+
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
