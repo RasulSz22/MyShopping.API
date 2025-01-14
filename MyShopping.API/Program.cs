@@ -1,4 +1,3 @@
-
 using Shop.Businness.Mappers;
 using Shop.DataAccess.ServiceRegistration;
 using Shop.Businness.Registration;
@@ -25,15 +24,40 @@ namespace MyShopping.API
             builder.Services.DataAccessServiceRegister(builder.Configuration);
             builder.Services.ServiceRegister();
 
-            builder.Services.AddSwaggerGen(options =>
+
+            builder.Services.AddSwaggerGen(swagger =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo
+                swagger.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Dosya Yükleme API",
-                    Version = "v1"
+                    Version = "v1",
+                    Title = "My Shopping API",
+                    Description = "ASP.NET Core 8 Web API"
                 });
 
-               options.OperationFilter<FileUploadOperationFilter>();
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
             });
 
             builder.Services.AddIdentity<AppUser, IdentityRole>()
