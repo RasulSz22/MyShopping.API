@@ -31,10 +31,10 @@ namespace MyShopping.API.Controllers
         public async Task<IActionResult> CreateCategory([FromBody] PostCategoryDTO dto)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            //if (currentUser == null)
-            //{
-            //    return Unauthorized("User not logged in");
-            //}
+            if (currentUser == null)
+            {
+                return Unauthorized("User not logged in");
+            }
 
             var result = await _categoryService.CreateAsync(dto);
             if (result.Success)
