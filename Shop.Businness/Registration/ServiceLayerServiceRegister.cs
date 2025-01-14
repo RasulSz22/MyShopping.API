@@ -29,7 +29,7 @@ namespace Shop.Businness.Registration
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IProductImageService, ProductImageService>();
-            services.AddScoped<IAccountService, AccountService>();
+            //services.AddScoped<IAccountService, AccountService>();
             //services.AddHttpContextAccessor();
         }
     }

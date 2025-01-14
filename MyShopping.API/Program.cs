@@ -24,8 +24,8 @@ namespace MyShopping.API
             builder.Services.AddAutoMapper(typeof(GlobalMapping));
             builder.Services.DataAccessServiceRegister(builder.Configuration);
             builder.Services.ServiceRegister();
-            builder.Services.AddScoped<IEmailService, EmailService>();
-            builder.Services.AddScoped<IEmailHelper, EmailHelper>();
+            //builder.Services.AddScoped<IEmailService, EmailService>();
+            //builder.Services.AddScoped<IEmailHelper, EmailHelper>();
 
             builder.Services.AddSwaggerGen(swagger =>
             {
