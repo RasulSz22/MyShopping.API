@@ -16,6 +16,7 @@ namespace Shop.Core.Entities.Models
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int? DiscountId { get; set; }
+        public Discount Discount { get; set; }
         public List<ProductImage> ProductImages {  get; set; }
     }
 }
