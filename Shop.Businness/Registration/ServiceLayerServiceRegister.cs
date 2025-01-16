@@ -17,7 +17,7 @@ namespace Shop.Businness.Registration
     {
         public static void ServiceRegister(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepositoryBase<>),typeof(EFRepositoryBase<>));
+            
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAddressService, AddressService>();
@@ -29,7 +29,8 @@ namespace Shop.Businness.Registration
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IDiscountService, DiscountService>();
             services.AddScoped<IProductImageService, ProductImageService>();
-            //services.AddScoped<IAccountService, AccountService>();
+           // services.AddScoped<IAccountService, AccountService>();
+            //services.AddScoped<IEmailHelper, EmailHelper>();
             //services.AddHttpContextAccessor();
         }
     }

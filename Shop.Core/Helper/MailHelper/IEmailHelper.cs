@@ -13,5 +13,6 @@ namespace Shop.Core.Helper.MailHelper
 
         Task<IResult> SendEmailAsync(string email, string url, string subject, string token);
         Task<IResult> SendNotificationEmailAsync(string email, string subject, string message);
+
     }
 }

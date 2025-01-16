@@ -10,6 +10,8 @@ using Shop.Core.Helper.MailHelper;
 using Microsoft.OpenApi.Models;
 using MyShopping.API.Filter;
 using NETCore.MailKit.Core;
+using NETCore.MailKit;
+using NETCore.MailKit.Infrastructure.Internal;
 namespace MyShopping.API
 {
     public class Program
@@ -26,6 +28,8 @@ namespace MyShopping.API
             builder.Services.ServiceRegister();
             //builder.Services.AddScoped<IEmailService, EmailService>();
             //builder.Services.AddScoped<IEmailHelper, EmailHelper>();
+            //builder.Services.AddScoped<IMailKitProvider, MailKitProvider>();
+            //builder.Services.Configure<MailKitOptions>(builder.Configuration.GetSection("MailKitOptions"));
 
             builder.Services.AddSwaggerGen(swagger =>
             {

@@ -18,7 +18,7 @@ namespace Shop.DataAccess.ServiceRegistration
             {
                 options.UseSqlServer(configuration.GetConnectionString("Default"));
             });
-
+            services.AddScoped(typeof(IRepositoryBase<>), typeof(EFRepositoryBase<>));
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IProductRepository, ProductReposiroty>();
             services.AddScoped<IAddressRepository, AddressRepository>();
