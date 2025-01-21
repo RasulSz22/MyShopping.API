@@ -306,24 +306,6 @@ namespace Shop.Businness.Services.Implementations
             if (!result.Succeeded) return new ErrorDataResult<string>(message: string.Join('\n', result.Errors.Select(x => x.Description)));
             var hasUserRole = await _userManager.IsInRoleAsync(appUser, role);
             if (!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
-            string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
-            var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
-
-            if (urlHelperFactory != null)
-            {
-                var endpoint = _http.HttpContext.GetEndpoint();
-                if (endpoint != null)
-                {
-                    var actionDescriptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
-                    if (actionDescriptor != null)
-                    {
-                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDescriptor);
-                        var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
-                        var url = urlHelper.Action("VerifyEmail", "Account", new { email = appUser.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
-                        await _emailService.SendEmailAsync(appUser.Email, url, "Verify Email", token);
-                    }
-                }
-            }
             return new SuccessDataResult<string>(
                 message: "RegisterDto successfull!"
                 );

@@ -30,12 +30,6 @@ namespace MyShopping.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCategory([FromBody] PostCategoryDTO dto)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-            {
-                return Unauthorized("User not logged in");
-            }
-
             var result = await _categoryService.CreateAsync(dto);
             if (result.Success)
             {
@@ -49,6 +43,7 @@ namespace MyShopping.API.Controllers
         {
             var result = await _categoryService.GetAllAsync(pageNumber, pageSize);
             return Ok(result);
+
         }
 
         [HttpGet("{id}")]

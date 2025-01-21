@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using Shop.DataAccess.Contexts;
 namespace Shop.DataAccess.Migrations
 {
     [DbContext(typeof(MyShoppingAPIDbContext))]
-    partial class MyShoppingAPIDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250121153623_ParentId")]
+    partial class ParentId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

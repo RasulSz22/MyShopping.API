@@ -30,14 +30,15 @@ namespace Shop.Businness.Services.Implementations
         private readonly IHttpContextAccessor _http;
         private readonly IMapper _mapper;
 
-        public LikedService(UserManager<AppUser> userManager, IWishlistRepository wishlistRepository, IWishlistItemRepository wishlistItemRepository, IProductRepository productRepository)
+        public LikedService(UserManager<AppUser> userManager, IWishlistRepository wishlistRepository, IWishlistItemRepository wishlistItemRepository, IProductRepository productRepository, IHttpContextAccessor http, IMapper mapper)
         {
             _userManager = userManager;
             _wishlistRepository = wishlistRepository;
             _wishlistItemRepository = wishlistItemRepository;
             _productRepository = productRepository;
+            _http = http;
+            _mapper = mapper;
         }
-
 
         public async Task<GetWishlistDTO> GetWishlist()
         {

@@ -10,6 +10,6 @@ namespace Shop.DTO.PostDTO
     public class PostCategoryDTO
     {
         public string Name {  get; set; }
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
     }
 }

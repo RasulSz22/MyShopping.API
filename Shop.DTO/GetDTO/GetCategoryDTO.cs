@@ -11,7 +11,7 @@ namespace Shop.DTO.GetDTO
     {
         public int Id { get; set; }
         public string? Name { get; set; }
-        public int ParentId { get; set; }
+        public int? ParentId { get; set; }
         public List<int> ChildrenIds { get; set; }
         public List<int> ProductIds { get; set; }
         public List<Category> Children { get; set; }
