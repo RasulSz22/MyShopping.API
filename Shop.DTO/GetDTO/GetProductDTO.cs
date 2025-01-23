@@ -17,7 +17,7 @@ namespace Shop.DTO.GetDTO
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
-        public int DiscountId { get; set; }
+        public int ProductId { get; set; }
         public string Image {  get; set; }
         public List<string> ProductImages { get; set; }
         public string MainImage { get; set; }

@@ -52,37 +52,7 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Category Successfully Created");
         }
 
-        public async Task<PagginatedResponse<GetCategoryDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6)
-        {
-            var query = _categoryRepository.GetQuery(x => !x.IsDeleted)
-                .AsNoTrackingWithIdentityResolution()
-                .Include(x => x.Parent).ThenInclude(x => x.Children);
-            var totalCount = await query.CountAsync();
-            var paginatedCategories = await query.ToPagedListAsync(pageNumber, pageSize);
-            var getDto = query.Select(x =>
-            new GetCategoryDTO
-            {
-                Name = x.Name,
-                ParentId = x.ParentId,
-                Id = x.Id,
-                Children = x.Children
-            }).ToList();
-
-            var getCategoryDtos = paginatedCategories.Datas.Select(x =>
-           new GetCategoryDTO
-           {
-               Name = x.Name,
-               ParentId = x.ParentId,
-               Id = x.Id,
-               Children = x.Children
-           }).ToList();
-
-            var paginatedResponse = new PagginatedResponse<GetCategoryDTO>(
-                getCategoryDtos, paginatedCategories.PageNumber,
-                paginatedCategories.PageSize,
-                totalCount, getDto);
-            return paginatedResponse;
-        }
+      
 
         public async Task<IDataResult<GetCategoryDTO>> GetAsync(int id)
         {
@@ -141,5 +111,7 @@ namespace Shop.Businness.Services.Implementations
             await _categoryRepository.UpdateAsync(categoryToUpdate);
             return new SuccessResult("Category Successfully Updated");
         }
+
+        
     }
 }

@@ -12,7 +12,6 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface ICategoryService
     {
-        public Task<PagginatedResponse<GetCategoryDTO>> GetAllAsync(int pageNumber = 1, int pageSize = 6);
         public Task<IResult> CreateAsync(PostCategoryDTO dto);
         public Task<IResult> UpdateAsync(int id,PostCategoryDTO dto);
         public Task<IResult> RemoveAsync(int id);

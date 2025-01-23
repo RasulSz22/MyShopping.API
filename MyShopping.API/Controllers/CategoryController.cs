@@ -38,13 +38,7 @@ namespace MyShopping.API.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCategories([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 6)
-        {
-            var result = await _categoryService.GetAllAsync(pageNumber, pageSize);
-            return Ok(result);
-
-        }
+      
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategoryById(int id)
@@ -60,11 +54,6 @@ namespace MyShopping.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] PostCategoryDTO dto)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-            {
-                return Unauthorized("User not logged in");
-            }
 
             var result = await _categoryService.UpdateAsync(id, dto);
             if (result.Success)
@@ -77,12 +66,6 @@ namespace MyShopping.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-            {
-                return Unauthorized("User not logged in");
-            }
-
             var result = await _categoryService.RemoveAsync(id);
             if (result.Success)
             {

@@ -23,7 +23,6 @@ namespace Shop.DataAccess.Contexts
         public DbSet<Product> Products { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Discount> Discounts { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Shipping> Shipping { get; set; }
@@ -58,10 +57,6 @@ namespace Shop.DataAccess.Contexts
             .Property(c => c.Price)
             .HasColumnType("decimal(18,2)");
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-            builder.Entity<Discount>()
-           .Property(d => d.DiscountPercentage)
-           .HasColumnType("decimal(18,2)");
 
             builder.Entity<Order>()
            .Property(o => o.TotalAmount)

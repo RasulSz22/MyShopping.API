@@ -56,10 +56,7 @@ namespace MyShopping.API.Controllers
             }
 
             var result = await _productService.CreateAsync(productDto);
-            if (result.Success)
-            {
-                return CreatedAtAction(nameof(GetProductById), new { id = productDto.ProductId }, productDto);
-            }
+           
             return BadRequest(result.Message);
         }
 

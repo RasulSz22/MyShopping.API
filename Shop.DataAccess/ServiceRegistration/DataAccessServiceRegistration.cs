@@ -29,7 +29,6 @@ namespace Shop.DataAccess.ServiceRegistration
             services.AddScoped<IWishlistRepository,WishlistRepository>();
             services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<IDiscountRepository, DiscountRepository>();
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
 
 

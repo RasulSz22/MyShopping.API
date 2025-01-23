@@ -37,8 +37,6 @@ namespace Shop.Businness.Mappers
             CreateMap<Category, GetCategoryDTO>().ReverseMap();
             CreateMap<Category, PostCategoryDTO>().ReverseMap();
 
-            CreateMap<Discount, GetDiscountDTO>().ReverseMap();
-            CreateMap<Discount, PostDiscountDTO>().ReverseMap();
 
             CreateMap<Payment, GetPaymentDTO>().ReverseMap();
             CreateMap<Payment, PostPaymentDTO>().ReverseMap();

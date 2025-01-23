@@ -14,14 +14,13 @@ namespace Shop.DTO.CreateDTO
 {
     public record PostProductDTO
     {
+        //public int ProductId {  get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
-        public int DiscountId { get; set; }
         public List<IFormFile>? ProductImages { get; set; }
         public IFormFile? MainImage {  get; set; }
-        public int ProductId {  get; set; }
     }
 }
