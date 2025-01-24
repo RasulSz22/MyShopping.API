@@ -18,7 +18,7 @@ namespace MyShopping.API.Controllers
         }
 
         [HttpPost]
-        [Authorize] // Sadece yetkili kullanıcılar kargo ekleyebilir.
+        [Authorize] 
         public async Task<IActionResult> CreateAsync([FromBody] PostShippingDTO dto)
         {
             if (!ModelState.IsValid)
@@ -48,7 +48,7 @@ namespace MyShopping.API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [Authorize] // Sadece yetkili kullanıcılar kargo silebilir.
+        [Authorize] 
         public async Task<IActionResult> RemoveAsync(int id)
         {
             var result = await _shippingService.RemoveAsync(id);
@@ -61,7 +61,7 @@ namespace MyShopping.API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [Authorize] // Sadece yetkili kullanıcılar kargo güncelleyebilir.
+        [Authorize] 
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] PostShippingDTO dto)
         {
             if (!ModelState.IsValid)

@@ -33,6 +33,7 @@ namespace Shop.Businness.Services.Implementations
             if (string.IsNullOrEmpty(dto.Name))
             {
                 return new ErrorResult("Category name is required!");
+
             }
 
             if (dto.ParentId != null)
@@ -111,7 +112,5 @@ namespace Shop.Businness.Services.Implementations
             await _categoryRepository.UpdateAsync(categoryToUpdate);
             return new SuccessResult("Category Successfully Updated");
         }
-
-        
     }
 }
