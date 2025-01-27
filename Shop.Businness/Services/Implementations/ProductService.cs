@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Businness.Extensions;
 using Shop.Businness.Responses;
@@ -39,7 +40,7 @@ namespace Shop.Businness.Services.Implementations
             var product = _mapper.Map<Product>(dto);
             if (dto.MainImage == null)
             {
-                return new ErrorResult ("The field image is required" );
+                return new ErrorResult("The field image is required");
             }
             if (dto.ProductImages == null || dto.ProductImages.Count() == 0)
             {
@@ -47,11 +48,11 @@ namespace Shop.Businness.Services.Implementations
             }
             if (!dto.MainImage.IsImage())
             {
-                return new ErrorResult ("The image is not valid" );
+                return new ErrorResult("The image is not valid");
             }
             if (dto.MainImage.IsSizeOk(1))
             {
-                return new ErrorResult( "Size of image is not valid" );
+                return new ErrorResult("Size of image is not valid");
             }
 
             string mainImage = dto.MainImage.SaveFile(_env.WebRootPath, "Images/Product");
@@ -136,5 +137,4 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("Product updated successfully");
         }
     }
-
 }

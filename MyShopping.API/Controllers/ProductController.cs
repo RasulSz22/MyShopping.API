@@ -70,6 +70,22 @@ namespace MyShopping.API.Controllers
             }
             return NotFound(new { Message = "Product not found." });
         }
-    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromForm] PostProductDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            var result = await _productService.UpdateAsync(id, dto);
+
+            if (!result.Success)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+
+            return Ok(new { message = result.Message });
+        }
+    }
 }
