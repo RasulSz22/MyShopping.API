@@ -1,5 +1,11 @@
-﻿using Shop.Businness.Services.Interfaces;
+﻿using AutoMapper;
+using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Enums;
+using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete.ErrorResults;
+using Shop.Core.Utilities.Results.Concrete.SuccessResults;
+using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.GetDTO;
 using Shop.DTO.PostDTO;
 using System;
@@ -12,22 +18,22 @@ namespace Shop.Businness.Services.Implementations
 {
     public class PaymentService : IPaymentService
     {
-        public async Task<IResult> CreateAsync(PostPaymentDTO dto)
+        public Task<IResult> CreateAsync(PostPaymentDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDataResult<GetPaymentDTO>> GetAsync(int id)
+        public Task<IDataResult<GetPaymentDTO>> GetAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> RemoveAsync(int id)
+        public Task<IResult> RemoveAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> UpdateAsync(int id, PostPaymentDTO dto)
+        public Task<IResult> UpdateAsync(int id, PostPaymentDTO dto)
         {
             throw new NotImplementedException();
         }
