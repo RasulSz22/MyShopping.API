@@ -13,6 +13,7 @@ namespace Shop.Core.Entities.Models
         public Category Category { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+        public OrderItem OrderItem { get; set; }
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public List<ProductImage> ProductImages {  get; set; }

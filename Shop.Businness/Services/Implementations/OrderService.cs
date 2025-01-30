@@ -1,5 +1,10 @@
-﻿using Shop.Businness.Services.Interfaces;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Models;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.DataAccess.Repositories.Interfaces;
 using Shop.DTO.CreateDTO;
 using Shop.DTO.GetDTO;
 using System;
@@ -12,22 +17,52 @@ namespace Shop.Businness.Services.Implementations
 {
     public class OrderService : IOrderService
     {
-        public async Task<IResult> CreateAsync(PostOrderDTO dto)
+        public Task Accept(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IDataResult<GetOrderDTO>> GetAsync(int id)
+        public Task CreateAsync(PostOrderDTO dto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> RemoveAsync(int id)
+        public Task Delivered(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IResult> UpdateAsync(int id, PostOrderDTO dto)
+        public Task<GetOrderDTO> Get(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<GetOrderDTO>> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task InProduction(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task PreProduction(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Reject(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Shipped(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Success(int id)
         {
             throw new NotImplementedException();
         }

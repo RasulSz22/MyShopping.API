@@ -11,12 +11,16 @@ namespace Shop.Businness.Services.Interfaces
 {
     public interface IOrderService
     {
-        public Task<IResult> CreateAsync(PostOrderDTO dto);
-
-        public Task<IResult> RemoveAsync(int id);
-
-        public Task<IResult> UpdateAsync(int id, PostOrderDTO dto);
-        public Task<IDataResult<GetOrderDTO>> GetAsync(int id);
+        public Task CreateAsync(PostOrderDTO dto);
+        public Task<IEnumerable<GetOrderDTO>> GetAll();
+        public Task<GetOrderDTO> Get(int id);
+        public Task Accept(int id);
+        public Task Reject(int id);
+        public Task Success(int id);
+        public Task PreProduction(int id);
+        public Task InProduction(int id);
+        public Task Shipped(int id);
+        public Task Delivered(int id);
     }
 
 }
