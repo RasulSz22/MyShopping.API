@@ -8,15 +8,18 @@ using Microsoft.Extensions.DependencyInjection;
 using NETCore.MailKit.Core;
 using Shop.Businness.Responses;
 using Shop.Businness.Services.Interfaces;
+using Shop.Core.Entities.Enums;
 using Shop.Core.Entities.Models;
 using Shop.Core.Helper.MailHelper;
 using Shop.Core.Utilities.Results.Abstract;
+using Shop.Core.Utilities.Results.Concrete;
 using Shop.Core.Utilities.Results.Concrete.ErrorResults;
 using Shop.Core.Utilities.Results.Concrete.SuccessResults;
 using Shop.DTO.UserDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using IResult = Shop.Core.Utilities.Results.Abstract.IResult;
@@ -25,188 +28,70 @@ namespace Shop.Businness.Services.Implementations
 {
     public class AccountService : IAccountService
     {
-
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly IHttpContextAccessor _http;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailHelper _emailService;
-        private readonly IUrlHelper _urlHelper;
+        private readonly IHttpContextAccessor _http;
+        private readonly IUrlHelper _helper;
 
-        public AccountService(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IHttpContextAccessor http, IEmailHelper emailService, IUrlHelper urlHelper)
+
+
+        public AccountService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,
+            IEmailHelper emailService, IHttpContextAccessor http, IUrlHelper helper, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _signInManager = signInManager;
-            _http = http;
             _emailService = emailService;
-            _urlHelper = urlHelper;
+            _http = http;
+            _helper = helper;
+            _roleManager = roleManager;
         }
-
-        public async Task<bool> ChangeRole(string userId, string newRoleId)
+        public async Task<Core.Utilities.Results.Abstract.IDataResult<string>> SignUp(RegisterDTO dto, string role)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return false;
-            }
 
-            var currentRoles = await _userManager.GetRolesAsync(user);
-            if (currentRoles == null || currentRoles.Count == 0)
+            var isValidEmail = _emailService.IsValidEmail(dto.Email);
+            if (!isValidEmail) return new ErrorDataResult<string>(message: "Invalid Email!");
+            var checkUser = await _userManager.FindByEmailAsync(dto.Email);
+            if (checkUser != null) return new ErrorDataResult<string>(message: "Email is already used!");
+            AppUser appUser = new AppUser()
             {
-                return false;
-            }
+                UserName = dto.Username,
+                Email = dto.Email,
+                IsActive = true
+            };
+            var result = await _userManager.CreateAsync(appUser, dto.Password);
+            if (!result.Succeeded) return new ErrorDataResult<string>(message: string.Join('\n', result.Errors.Select(x => x.Description)));
 
-            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-            if (!removeResult.Succeeded)
-            {
-                return false;
-            }
-            var addResult = await _userManager.AddToRoleAsync(user, newRoleId);
-            return addResult.Succeeded;
-        }
-
-        public async Task<IResult> ForgetPassword(string email)
-        {
-            if (email is null)
-            {
-                return new ErrorResult("Please Enter Email!");
-            }
-
-            var isValidEmail = _emailService.IsValidEmail(email);
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null) return new ErrorResult("Email is not registered!");
-            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            if (token is null) return new ErrorResult("Token is not generated");
+            var hasUserRole = await _userManager.IsInRoleAsync(appUser, role);
+            if (!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(appUser);
             var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+
             if (urlHelperFactory != null)
             {
                 var endpoint = _http.HttpContext.GetEndpoint();
                 if (endpoint != null)
                 {
-                    var actionDesciptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
-                    if (actionDesciptor != null)
+                    var actionDescriptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
+                    if (actionDescriptor != null)
                     {
-                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDesciptor);
+                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDescriptor);
+
                         var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
-                        var url = urlHelper.Action("Reset Password", "Account", new { email = user.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
-                        await _emailService.SendEmailAsync(user.Email, url, "Verify Email for resetpassword", token);
+
+                        var url = urlHelper.Action("VerifyEmail", "Account", new { email = appUser.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
+
+                        //var url = $"{_http.HttpContext.Request.Scheme}://{_http.HttpContext.Request.Host}{_helper.Action("VerifyEmail", "Identity", new { email = appUser.Email, token = token })}";
+
+                        await _emailService.SendEmailAsync(appUser.Email, url, "Verify Email", token);
                     }
                 }
+
             }
-            return new SuccessResult();
-        }
-
-        public async Task<PagginatedResponse<AppUser>> GetAllAdmin(int count, int page)
-        {
-            try
-            {
-                IQueryable<AppUser> query = _userManager.Users;
-                if (count > 0 && page > 0)
-                {
-                    var usersInRoles = new List<AppUser>();
-                    foreach (var user in query)
-                    {
-                        var roles = await _userManager.GetRolesAsync(user);
-                        foreach (var role in roles)
-                        {
-                            if (role == "Admin")
-                            {
-                                usersInRoles.Add(user);
-                            }
-                        }
-                    }
-                    query = usersInRoles.AsQueryable();
-                }
-                int totalCount = query.Count();
-                List<AppUser> users = query.Skip((page - 1) * count).Take(count).ToList();
-                var response = new PagginatedResponse<AppUser>(
-                    datas: users,
-                    pageNumber: page,
-                    pageSize: count,
-                    totalCount: totalCount,
-                    otherdatas: null
-                    );
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new PagginatedResponse<AppUser>(
-                    datas: null,
-                    pageNumber: 0,
-                    pageSize: 0,
-                    totalCount: 0,
-                    otherdatas: null
-                    );
-            }
-        }
-
-        public async Task<PagginatedResponse<AppUser>> GetAllUsers(int count, int page)
-        {
-            try
-            {
-                IQueryable<AppUser> query = _userManager.Users;
-
-                if (count > 0 && page > 0)
-                {
-                    var usersInRoles = new List<AppUser>();
-                    foreach (var user in query)
-                    {
-                        var roles = await _userManager.GetRolesAsync(user);
-
-                        foreach (var role in roles)
-                        {
-                            if (role == "Admin" || role == "Customer")
-                            {
-                                usersInRoles.Add(user);
-                            }
-                        }
-
-                    }
-                    query = usersInRoles.AsQueryable();
-                }
-                int totalCount = query.Count();
-                List<AppUser> users = query.Skip((page - 1) * count).Take(count).ToList();
-                var response = new PagginatedResponse<AppUser>(
-                    datas: users,
-                    pageNumber: page,
-                    pageSize: count,
-                    totalCount: totalCount,
-                    otherdatas: null
+            return new SuccessDataResult<string>(
+                message: "RegisterDto olundu"
                 );
-                return response;
-            }
-            catch (Exception ex)
-            {
-                return new PagginatedResponse<AppUser>(
-                    datas: null,
-                    pageNumber: 0,
-                    pageSize: 0,
-                    totalCount: 0,
-                    otherdatas: null
-                );
-            }
-        }
-
-        public async Task<IDataResult<ResetPasswordDTO>> GetResetPassword(string email, string token)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user is null)
-            {
-                return new ErrorDataResult<ResetPasswordDTO>("User not found");
-            }
-            ResetPasswordDTO dto = new ResetPasswordDTO()
-            {
-                Email = email,
-                Token = token
-            };
-
-            return new SuccessDataResult<ResetPasswordDTO>(dto, "get resetPassword");
-        }
-
-        public async Task<AppUser> GetUser(string id)
-        {
-            return _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == id);
         }
 
         private async Task<bool> IsUserInRole(AppUser user, string roleName)
@@ -214,7 +99,7 @@ namespace Shop.Businness.Services.Implementations
             return await _userManager.IsInRoleAsync(user, roleName);
         }
 
-        public async Task<IResult> Login(LoginDTO dto, bool IsAdminPanel)
+        public async Task<IResult> Login(LoginDTO dto, bool isAdminPanelLogin)
         {
             try
             {
@@ -234,9 +119,9 @@ namespace Shop.Businness.Services.Implementations
                 if (!checkUser.IsActive)
                     return new ErrorResult("Your account is blocked! Please contact the administrator.");
 
-                if ((IsAdminPanel && (await IsUserInRole(checkUser, "Admin") || await IsUserInRole(checkUser, "Customer"))))
+                if ((isAdminPanelLogin && (await IsUserInRole(checkUser, "Owner") || await IsUserInRole(checkUser, "Employee"))))
                 {
-                    return new ErrorResult(IsAdminPanel ? "You are not authorized to access the admin panel." : "You are not authorized to access the user panel. Please create a user for yourself.");
+                    return new ErrorResult(isAdminPanelLogin ? "You are not authorized to access the admin panel." : "You are not authorized to access the user panel. Please create a user for yourself.");
                 }
 
                 var result = await _signInManager.PasswordSignInAsync(checkUser, dto.Password, dto.RememberMe, true);
@@ -258,7 +143,22 @@ namespace Shop.Businness.Services.Implementations
             }
         }
 
-        public async Task<IResult> Logout()
+        public async Task<IResult> VerifyEmail(string token, string email)
+        {
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser == null) return new ErrorResult("User tapilmadi");
+            var res = await _userManager.ConfirmEmailAsync(appUser, token);
+            if (!res.Succeeded)
+            {
+                var errors = string.Join(", ", res.Errors.Select(e => e.Description));
+                return new ErrorResult($"Confirm Email is invalid : {errors}");
+            }
+            appUser.EmailConfirmed = true;
+            await _signInManager.SignInAsync(appUser, true);
+            return new SuccessResult("Email tesdiq olundu ve signin olundu");
+        }
+
+        public async Task<IResult> LogOut()
         {
             try
             {
@@ -270,6 +170,57 @@ namespace Shop.Businness.Services.Implementations
             {
                 return new ErrorResult(ex.Message);
             }
+        }
+
+        public async Task<IResult> ForgetPassword(string email)
+        {
+            if (email is null)
+            {
+                return new ErrorResult("please enter email!");
+            }
+            var isValidEmail = _emailService.IsValidEmail(email);
+            if (!isValidEmail) return new ErrorResult("Invalid Email!");
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return new ErrorResult("Email is not registered!");
+            string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            if (token is null) return new ErrorResult("token is not generated");
+            var urlHelperFactory = _http.HttpContext.RequestServices.GetService<IUrlHelperFactory>();
+
+            if (urlHelperFactory != null)
+            {
+                var endpoint = _http.HttpContext.GetEndpoint();
+                if (endpoint != null)
+                {
+                    var actionDescriptor = endpoint.Metadata.GetMetadata<ControllerActionDescriptor>();
+                    if (actionDescriptor != null)
+                    {
+                        var actionContext = new ActionContext(_http.HttpContext, _http.HttpContext.GetRouteData(), actionDescriptor);
+
+                        var urlHelper = urlHelperFactory.GetUrlHelper(actionContext);
+
+                        var url = urlHelper.Action("ResetPassword", "Account", new { email = user.Email, token = token }, protocol: _http.HttpContext.Request.Scheme);
+
+                        await _emailService.SendEmailAsync(user.Email, url, "Verify Email for resetpassword", token);
+                    }
+                }
+            }
+            return new SuccessResult();
+        }
+
+        public async Task<Core.Utilities.Results.Abstract.IDataResult<ResetPasswordDTO>> ResetPasswordGet(string email, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user is null)
+            {
+                return new ErrorDataResult<ResetPasswordDTO>("User not found");
+            }
+            ResetPasswordDTO dto = new ResetPasswordDTO()
+            {
+                Email = email,
+                Token = token
+            };
+
+            return new SuccessDataResult<ResetPasswordDTO>(dto, "get resetPassword");
         }
 
         public async Task<IResult> ResetPasswordPost(ResetPasswordDTO dto)
@@ -288,27 +239,6 @@ namespace Shop.Businness.Services.Implementations
             }
 
             return new SuccessResult("Reset password success");
-        }
-
-        public async Task<IDataResult<string>> SignUp(RegisterDTO dto, string role)
-        {
-            var isValidEmail = _emailService.IsValidEmail(dto.Email);
-            if (!isValidEmail) return new ErrorDataResult<string>(message: "Invalid Email!");
-            var chekUser = await _userManager.FindByEmailAsync(dto.Email);
-            if (chekUser != null) return new ErrorDataResult<string>(message: "Email is already used!");
-            AppUser appUser = new AppUser()
-            {
-                UserName = dto.Username,
-                Email = dto.Email,
-                IsActive = true,
-            };
-            var result = await _userManager.CreateAsync(appUser, dto.Password);
-            if (!result.Succeeded) return new ErrorDataResult<string>(message: string.Join('\n', result.Errors.Select(x => x.Description)));
-            var hasUserRole = await _userManager.IsInRoleAsync(appUser, role);
-            if (!hasUserRole) await _userManager.AddToRoleAsync(appUser, role);
-            return new SuccessDataResult<string>(
-                message: "RegisterDto successfull!"
-                );
         }
 
         public async Task<IResult> Update(UpdateDTO dto)
@@ -347,19 +277,242 @@ namespace Shop.Businness.Services.Implementations
             return new SuccessResult("User updated successfully");
         }
 
-        public async Task<IResult> VerifyEmail(string token, string email)
+        public async Task<IResult> ChangeUserActivationStatus(string email, bool activate)
         {
-            AppUser appUser = await _userManager.FindByEmailAsync(email);
-            if (appUser == null) return new ErrorResult("User Not Found");
-            var res = await _userManager.ConfirmEmailAsync(appUser, token);
-            if (!res.Succeeded)
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null)
             {
-                var errors = string.Join(",", res.Errors.Select(e => e.Description));
-                return new ErrorResult($"Confirm Email is Invalid : {errors}");
+                return new ErrorResult("User not found!");
             }
-            appUser.EmailConfirmed = true;
-            await _signInManager.SignInAsync(appUser, true);
-            return new SuccessResult("Email Accepted and Signed In");
+
+            if (activate)
+            {
+                user.IsActive = true;
+            }
+            else
+            {
+                user.IsActive = false;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                string errors = string.Join("\n", result.Errors.Select(error => error.Description));
+                return new ErrorResult(errors);
+            }
+
+            return new SuccessResult("User activation status changed successfully");
+        }
+
+        public async Task<PagginatedResponse<AppUser>> GetAllUsers(int page, int count)
+        {
+            try
+            {
+                IQueryable<AppUser> query = _userManager.Users;
+
+                if (count > 0 && page > 0)
+                {
+                    var usersInRoles = new List<AppUser>();
+
+                    foreach (var user in query)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
+
+                        foreach (var role in roles)
+                        {
+                            if (role == "Employee" || role == "Owner")
+                            {
+                                usersInRoles.Add(user);
+                            }
+                        }
+
+                    }
+
+                    query = usersInRoles.AsQueryable();
+
+
+                }
+
+                int totalCount = query.Count();
+
+                List<AppUser> users = query.Skip((page - 1) * count).Take(count).ToList();
+
+                var response = new PagginatedResponse<AppUser>(
+                    datas: users,
+                    pageNumber: page,
+                    pageSize: count,
+                    totalCount: totalCount,
+                    otherdatas: null
+                );
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new PagginatedResponse<AppUser>(
+                    datas: null,
+                    pageNumber: 0,
+                    pageSize: 0,
+                    totalCount: 0,
+                    otherdatas: null
+                );
+            }
+        }
+
+        public async Task<PagginatedResponse<AppUser>> GetAllAdmin(int page, int count)
+        {
+            try
+            {
+                IQueryable<AppUser> query = _userManager.Users;
+
+                if (count > 0 && page > 0)
+                {
+                    var usersInRoles = new List<AppUser>();
+
+                    foreach (var user in query)
+                    {
+                        var roles = await _userManager.GetRolesAsync(user);
+
+                        foreach (var role in roles)
+                        {
+                            if (role == "Admin")
+                            {
+                                usersInRoles.Add(user);
+                            }
+                        }
+
+                    }
+
+                    query = usersInRoles.AsQueryable();
+
+
+                }
+                int totalCount = query.Count();
+                List<AppUser> users = query.Skip((page - 1) * count).Take(count).ToList();
+
+                var response = new PagginatedResponse<AppUser>(
+                    datas: users,
+                    pageNumber: page,
+                    pageSize: count,
+                    totalCount: totalCount,
+                    otherdatas: null
+                );
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                return new PagginatedResponse<AppUser>(
+                    datas: null,
+                    pageNumber: 0,
+                    pageSize: 0,
+                    totalCount: 0,
+                    otherdatas: null
+                );
+            }
+        }
+
+        public async Task<Core.Utilities.Results.Abstract.IResult> RegisterWithGoogle(string returnUrl = null)
+        {
+            try
+            {
+                var authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties("Google", _helper.Action("GoogleCallback", "Account", new { returnUrl }));
+                return new SuccessResult("Google authentication initiated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Error initiating Google authentication: {ex.Message}");
+            }
+        }
+
+
+        public async Task<Core.Utilities.Results.Abstract.IResult> GoogleCallback(string returnUrl = null)
+        {
+            try
+            {
+                var externalLoginInfo = await _signInManager.GetExternalLoginInfoAsync();
+                if (externalLoginInfo == null)
+                {
+                    return new ErrorResult("External login information not found.");
+                }
+
+                var email = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+                var userName = externalLoginInfo.Principal.FindFirstValue(ClaimTypes.Name);
+
+                var existingUser = await _userManager.FindByEmailAsync(email);
+                if (existingUser != null)
+                {
+                    await _signInManager.SignInAsync(existingUser, isPersistent: false);
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return new SuccessResult("User signed in successfully.");
+                    }
+                    return new SuccessResult("User signed in successfully.");
+                }
+
+                var userNameWithoutSpaces = userName.Replace(" ", string.Empty);
+                var newUser = new AppUser
+                {
+                    UserName = userNameWithoutSpaces.ToLower(),
+                    Email = email,
+                    EmailConfirmed = true
+                };
+
+                var result = await _userManager.CreateAsync(newUser);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(newUser, UserRoles.Customer.ToString());
+
+                    await _signInManager.SignInAsync(newUser, isPersistent: false);
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        return new SuccessResult("New user registered and signed in successfully.");
+                    }
+
+                    return new SuccessResult("New user registered and signed in successfully.");
+                }
+                else
+                {
+                    return new ErrorResult("Error registering new user.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return new ErrorResult($"Error during Google callback: {ex.Message}");
+            }
+        }
+
+        public async Task<AppUser> GetUser(string id)
+        {
+            return _signInManager.UserManager.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public async Task<bool> ChangeRole(string userId, string newRoleId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            if (currentRoles == null || currentRoles.Count == 0)
+            {
+                return false;
+            }
+
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            if (!removeResult.Succeeded)
+            {
+                return false;
+            }
+
+
+            var addResult = await _userManager.AddToRoleAsync(user, newRoleId);
+            return addResult.Succeeded;
         }
     }
+
 }

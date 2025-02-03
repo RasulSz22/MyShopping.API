@@ -10,12 +10,13 @@ namespace Shop.DTO.PostDTO
 {
     public record PostOrderItemDTO
     {
-        public string AppUserId { get; set; }
-        public string ProductId {  get; set; }
+        public int ProductId {  get; set; }
+      //  public int OrderId { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+        public decimal TotalPrice { get; set; }
+        //public string AppUserId { get; set; }
+        //public OrderItem OrderItems { get; set; }
         //public Product Product { get; set; } 
-       // public decimal TotalAmount { get; set; }
-        //public string? Status { get; set; }
-        public OrderItem OrderItems { get; set; }
-       // public int PaymentId { get; set; }
     }
 }
